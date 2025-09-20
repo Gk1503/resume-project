@@ -1,20 +1,11 @@
 import React, { useContext } from "react";
 import "../DesginLeft/DesginLeft.css";
-// import HeadingQuestion from "../../QuestionBank/Heading/Heading";
-// import Skill from "../../QuestionBank/Skill/Skill";
-// import Summary from "../../QuestionBank/Summary/Summary";   
-// import Education from "../../QuestionBank/Education/Education";
-// import WorkHistory from "../../../Resume/QuestionBank/WorkHistory/WorkHistory";
+
 import FormContext from "../../Context/FormContext";
 
 function DesginLeft(props) {
 const {changebtn , setchangebtn} = useContext(FormContext);
-// const [showHeading, setShowHeading] = useState(true);
-//   const [showEducation, setShowEducation] = useState(false);
-//   const [showWorkHistory, setShowWorkHistory] = useState(false);
-//   const [showSkill, setShowSkill] = useState(false);
-//   const [ShowSummary, setShowSummary] = useState(false);  
-//   const [showPreviewModal, setShowPreviewModal] = useState(false);
+
 
 
 const handleRightsideView = (value) => {

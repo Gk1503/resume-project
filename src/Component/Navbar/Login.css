@@ -1,0 +1,105 @@
+/* --- Login Modal Base --- */
+.login-modal-dialog {
+  max-width: 420px;
+  animation: login-fade-in 0.4s ease forwards;
+}
+
+@keyframes login-fade-in {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.login-modal-content {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Header --- */
+.login-modal-header {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  border-bottom: none;
+  padding: 20px;
+  text-align: center;
+}
+
+.login-modal-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+/* --- Body --- */
+.login-modal-body {
+  padding: 30px;
+  background-color: #f9fafc;
+}
+
+.login-modal-body .form-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.login-modal-body .form-control {
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+}
+
+.login-modal-body .form-control:focus {
+  border-color: #6a11cb;
+  box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.25);
+}
+
+/* --- Button --- */
+.login-submit-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  font-weight: 700;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  transition: 0.3s ease;
+}
+
+.login-submit-btn:hover {
+  background: linear-gradient(135deg, #2575fc, #6a11cb);
+  transform: translateY(-2px);
+}
+
+/* --- Extra Links --- */
+.login-extra-links {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-extra-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6a11cb;
+  text-decoration: none;
+}
+
+.login-extra-links a:hover {
+  color: #2575fc;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-modal-dialog {
+    max-width: 90%;
+  }
+}
