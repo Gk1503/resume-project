@@ -1,0 +1,90 @@
+.Bn{
+   
+    height: 600px;
+    width: 1500px;
+    margin-left: -100px;
+    margin-right: -40px;
+    background-color: #092347;
+    border-radius: 0px 0px 0px 100px;
+    display: flex;
+}
+.Resume-builder{
+    margin-top: 50px;
+    height: 500px;
+    width: 500px;
+    margin-left: 150px;
+}
+.Bn2{
+    margin-top: -40px;
+    width: 800px;
+    margin-left: 80px;
+    color: white;
+    font-size:48px;
+    font-style: italic;
+    font-weight: bolder;
+    font-weight: 900;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    /* font-family:   Helvetica, Arial , "Segoe UI Emoji", "Segoe UI Symbol"; */
+}
+p{
+    color: white;
+}
+
+.Bn2 span{
+    color: orangered;
+   
+    margin-top: 8px;
+
+}
+.bn2{
+    margin-top: 150px;
+    margin-left: 10px;
+}
+.bn3{
+    margin-top: 20px;
+    font-size: 21px;
+    font-family:'Times New Roman', Times, serif;
+    font-weight: 400;
+}
+.fade-in {
+    opacity: 0;
+    animation: fadeIn ease 1s;
+    animation-fill-mode: forwards;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .button{
+    border-radius: 60px;
+    font-size: 25px;
+    margin-left: 180px;
+    background-color: #02818c;
+    color: white;
+    font-weight: 400;
+  }
+  .uparrow{
+    position: relative;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  .uparrow FontAwesomeIcon {
+
+    color: burlywood;
+  }
+  .Ex{
+    font-size: 18px;
+    margin-top: 10px;
+  }
+  .Ex span{
+    font-size: 14px;
+    color: greenyellow;
+    margin-left: 10px;
+  }

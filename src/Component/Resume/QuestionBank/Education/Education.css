@@ -1,0 +1,76 @@
+
+.education{
+    padding: 30px;
+    font-family: Arial, sans-serif;
+    width: 830px;
+    margin: 0 auto;
+  }
+  
+  .education-container h2 {
+    font-size: 26px;
+    color: #111;
+  }
+  
+  .education-container p {
+    margin-bottom: 25px;
+    color: #444;
+  }
+  
+  .education-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .fullwidth {
+    width: 40px;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 40px;
+  }
+  
+  input,
+  select {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input::placeholder {
+    color: #aaa;
+  }
+  
+  .grad-date-selectors {
+    display: flex;
+    gap: 40px;
+    
+  }
+  .grad-date-selectors select{
+
+    width: 100px;
+
+  }
+.AddAnother{
+  margin-top: 40px;
+  border: 0px solid black;
+  background-color: white;
+}
+.AddAnother:hover{
+  background-color: black;
+}

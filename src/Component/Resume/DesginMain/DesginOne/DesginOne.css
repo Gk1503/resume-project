@@ -1,0 +1,92 @@
+.Destop{
+height: 150px;
+border: 1px solid;
+position: relative;
+background-color:  #092347;
+z-index: 1;
+}
+.Desbot{
+    /* border: 1px solid black; */
+    height: 700px;
+    position: absolute;
+  top: 50px;
+width: 1528px;
+  z-index: 2;
+  border-top-right-radius: 110px;
+  background-color: white;
+}
+h4{
+    color: white;
+    margin-top: 10px;
+    margin-left: 200px;
+}
+h4 span{
+    color: orangered;
+}
+#justreview{
+    text-align:center;
+    font-size: 25px;
+    color: #002d6b;
+
+}
+#StartfromStrach{
+    border: 1px solid black;
+    height: 250px;
+    width: 500px;
+    margin-left: 500px;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor:pointer;
+    border-radius: 10px 10px 10px 10px ;
+}
+#faFile{
+    font-size: 70px;
+    color: orangered;
+}
+#well{
+    text-align: center;
+    font-size: 17px;
+    color:  #092347;
+}
+#StartfromStrach div h5{
+    font-size: 25px;
+    color: #002d6b ;
+}
+#StartfromStrach:hover{
+    border: 7px solid darkgreen;
+
+}
+.Nextbtn{
+    border-radius: 60px ;
+    width: 180px;
+    justify-content: center;
+    margin-left: 670px;
+    margin-top: 20px;
+    height: 50px;
+    background-color: #02818c;
+    color: #f6f5f0;
+    font-weight: bolder;
+}
+/* Button styles */
+.Nextbtn.disabled {
+    background-color: gray;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  .Nextbtn.enabled {
+    background-color: #02818c;
+    cursor: pointer;
+    opacity: 1;
+  }
+  #StartfromStrach.clicked {
+    border: 7px solid darkgreen;
+  }
+  
+  /* Original hover effect (still applies until clicked) */
+  #StartfromStrach:hover {
+    border: 7px solid darkgreen;
+  }

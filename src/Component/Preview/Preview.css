@@ -1,0 +1,18 @@
+.custom-modal .modal-content {
+  width: 1100px;
+  height: 800px;
+  justify-content: center;
+  margin-left: -170px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sec {
+  height: 40px;
+  font-weight: 500;
+}
+.Downloadbtn{
+  height: 40px;
+  
+}

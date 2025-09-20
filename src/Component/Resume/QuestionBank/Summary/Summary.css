@@ -1,0 +1,40 @@
+.summary-section-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+    font-family: 'Segoe UI', sans-serif;
+
+  }
+  
+  .summary-heading {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #1f2d3d;
+    margin-top: 100px;
+  }
+  
+  .summary-subtext {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .summary-textarea {
+    width: 600px;
+    height: 350px;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-family: inherit;
+    margin-right: 100px;
+  }
+  
+  .summary-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+ 

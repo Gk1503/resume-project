@@ -1,0 +1,106 @@
+.MainWorkHsitory {
+   
+    padding: 40px;
+    width: 820px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+
+  }
+  
+  .form-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #0A2540;
+    text-align: start;
+  }
+  
+  .form-subtitle {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .work-form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .work-form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .work-form input[type="text"],
+  .work-form select {
+    /* width: 200px; */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .date-inputs {
+    display: flex;
+    gap: 40px;
+    
+  }
+  .date-inputs select{
+    width: 120px;
+    cursor: pointer;
+    height: 45px;
+  }
+  
+  .checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+  }
+.local{
+    margin-top: -40px;
+}
+    
+  .next-btn {
+    background-color: #0A2540;
+    color: #fff;
+  }
+  .workone{
+    display: flex;
+  }
+  .workone input{
+    width: 350px;
+    
+  }
+  .workrow3{
+    display: flex;
+    margin-top: -40px;
+  }
+  .workrow3 select{
+    gap: 50px;
+  }
+  .fresher-button-container {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .fresher-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fresher-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Active button (when fresher mode is ON) */
+  .fresher-btn.active {
+    background-color: #28a745 !important; /* green color */
+  }
+  
+  

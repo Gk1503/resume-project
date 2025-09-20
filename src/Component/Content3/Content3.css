@@ -1,0 +1,29 @@
+
+h1{
+    color:  hsl(215, 100%, 21%);
+}
+h6{
+    text-align: center;
+    font-size: larger;
+    color:  hsl(215, 100%, 21%);
+}
+
+.subcont33 img{
+    height: 160px;
+    width: 160px;
+    margin-left: 130px;
+    align-items: center;
+    justify-content: center;
+}
+.subcont33{
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    gap: 4%;
+    margin-top: 100px;
+}
+ 
+h5{
+    text-align: center;
+    color: hsl(215, 100%, 21%);;
+}

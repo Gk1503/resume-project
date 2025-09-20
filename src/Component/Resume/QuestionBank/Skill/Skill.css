@@ -1,0 +1,86 @@
+.skillContainerUniqueskill {
+    padding: 20px;
+    margin-right: 100px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .skillLayoutUniqueskill {
+    display: flex;
+    gap: 40px;
+  }
+  
+  .recommendedSectionUniqueskill {
+    width: 40%;
+  }
+  
+  .skillListUniqueskill {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .addSkillBtnUniqueskill {
+    
+    background-color:none;
+    color: black;
+    height: 40px;
+    cursor: pointer;
+  }
+  .addSkillBtnUniqueskill:hover{
+    background-color: black;
+  }
+  
+  .ratingSectionUniqueskill {
+    width: 50%;
+  }
+  
+  .skillItemUniqueskill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .starRatingUniqueskill {
+    cursor: pointer;
+  }
+  
+  .singleStarUniqueskill {
+    font-size: 20px;
+    color: #ccc;
+  }
+  
+  .filledStarUniqueskill {
+    color: #007bff;
+  }
+  
+  /* input[type="text"] {
+    padding: 5px;
+    font-size: 14px;
+    width: 200px;
+  } */
+  
+  .deleteSkillBtnUniqueskill {
+    /* background: transparent; */
+    border: none;
+    /* color: red; */
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .deleteSkillBtnUniqueskill :hover{
+    background-color: pink;
+  }
+  .ratingSectionUniqueskill{
+    height: auto;
+    width: 370px;
+    border: 1px solid black;
+    border-radius: 4%;
+    text-align: center;
+  }
+  .Skillimg{
+   margin-top: 10px;
+    height: 350px;
+    width: 300px;
+  }
+  .subtit{
+    margin-top: -40px;
+  }
