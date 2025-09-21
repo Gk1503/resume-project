@@ -23,15 +23,20 @@ function Education() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.get("http://localhost:5000/get-resume", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "http://localhost:5000/education/get-resume",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (res.data.educationDetails) {
           setSavedEducations(res.data.educationDetails);
         }
       } catch (err) {
         console.error(err);
+        setMessage("❌ Failed to fetch education.");
+        setTimeout(() => setMessage(""), 3000);
       }
     };
     fetchEducation();
@@ -52,19 +57,25 @@ function Education() {
         return;
       }
 
+      // Clean default Month/Year values
+      const eduToSave = { ...education };
+      if (eduToSave.GraduationMonth === "Month") eduToSave.GraduationMonth = "";
+      if (eduToSave.GraduationYear === "Year") eduToSave.GraduationYear = "";
+
       const res = await axios.post(
-        "http://localhost:5000/save-education",
-        { educationDetails: education },
+        "http://localhost:5000/education/save-education",
+        { educationDetails: eduToSave },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // res.data.education contains full array of educations
       setSavedEducations(res.data.education);
       setEducation(emptyEducation);
       setMessage("✅ Education saved successfully!");
+      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error(err);
       setMessage(err.response?.data?.message || "❌ Failed to save education.");
+      setTimeout(() => setMessage(""), 3000);
     }
   };
 
@@ -76,19 +87,20 @@ function Education() {
         return;
       }
 
-      // Get the education ID from the saved array (if you use _id in DB)
       const eduId = savedEducations[index]._id;
 
-      await axios.delete(`http://localhost:5000/delete-education/${eduId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.delete(
+        `http://localhost:5000/education/delete-education/${eduId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      const updated = savedEducations.filter((_, i) => i !== index);
-      setSavedEducations(updated);
+      setSavedEducations(res.data.education);
       setMessage("🗑️ Education deleted successfully!");
+      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error(err);
       setMessage(err.response?.data?.message || "❌ Failed to delete education.");
+      setTimeout(() => setMessage(""), 3000);
     }
   };
 
@@ -163,8 +175,8 @@ function Education() {
               >
                 <option>Month</option>
                 {[
-                  "January", "February", "March", "April", "May", "June",
-                  "July", "August", "September", "October", "November", "December"
+                  "January","February","March","April","May","June",
+                  "July","August","September","October","November","December"
                 ].map((month) => (
                   <option key={month} value={month}>{month}</option>
                 ))}
@@ -211,7 +223,7 @@ function Education() {
             </thead>
             <tbody>
               {savedEducations.map((edu, idx) => (
-                <tr key={idx}>
+                <tr key={edu._id || idx}>
                   <td>{idx + 1}</td>
                   <td>{edu.SchoolName}</td>
                   <td>{edu.SchoolLocation}</td>

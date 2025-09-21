@@ -143,3 +143,8 @@
     background-color: #1e90ff;
     color: white;
  }
+ .input-wrapper {
+  display: block;      /* Make it block so it stacks */
+  margin-top: 20px;    /* Add spacing */
+  width: 100%;         /* Ensure full width */
+}

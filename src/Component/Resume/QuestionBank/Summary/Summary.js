@@ -1,12 +1,56 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Summary.css";
 import FormContext from "../../Context/FormContext";
+import axios from "axios";
 
 function Summary() {
   const { summary, setSummary } = useContext(FormContext);
+  const [message, setMessage] = useState("");
 
-  const handleSave = () => {
-    console.log("Saved Summary:", summary); // Optional: confirm in console
+  // Fetch summary on mount
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const res = await axios.get("http://localhost:5000/summary/get", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.data) setSummary(res.data.content);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSummary();
+  }, [setSummary]);
+
+  // Save summary
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setMessage("❌ Please login to save summary");
+        return;
+      }
+
+      if (!summary || summary.trim() === "") {
+        setMessage("❌ Summary cannot be empty");
+        return;
+      }
+
+      const res = await axios.post(
+        "http://localhost:5000/summary/save",
+        { content: summary },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setMessage("✅ " + res.data.message);
+    } catch (err) {
+      console.error(err);
+      setMessage(err.response?.data?.message || "❌ Failed to save summary");
+    }
   };
 
   return (
@@ -24,11 +68,12 @@ function Summary() {
       ></textarea>
 
       <button className="summary-btn save-btn" onClick={handleSave}>
-        Save Summary
+        💾 Save Summary
       </button>
+
+      {message && <p className="status-message">{message}</p>}
     </div>
   );
 }
 
 export default Summary;
-  

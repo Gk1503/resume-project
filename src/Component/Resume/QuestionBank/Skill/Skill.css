@@ -84,3 +84,30 @@
   .subtit{
     margin-top: -40px;
   }
+  /* Save Button */
+.saveBtnUniqueskill {
+  display: inline-block;
+  height: 40px;
+  margin-top: 20px;
+  /* padding: 10px 25px; */
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: #4CAF50; /* Green background */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.saveBtnUniqueskill:hover {
+  background: #45a049; /* Slightly darker green on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
+.saveBtnUniqueskill:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 4px rgba(0,0,0,0.1);
+}
