@@ -1,80 +1,196 @@
-.Content2{
-/* border: 1px solid  black; */
-display: flex;
-flex-direction: row;
-justify-content: center;
-gap: 2%;
+/* =========================================
+   Features Section (Content2) - Dark Theme
+   ========================================= */
+:root {
+    --bg-dark: #0f172a;
+    /* Deep Slate/Navy */
+    --card-bg: rgba(255, 255, 255, 0.05);
+    /* Glassmorphism */
+    --primary: #3b82f6;
+    --text-light: #f8fafc;
+    --text-gray-light: #cbd5e1;
+    --border-dark: rgba(255, 255, 255, 0.1);
 }
 
-.mainbox{
+.features-section {
+    width: 100%;
+    padding: 100px 20px;
+    background-color: var(--bg-dark);
+    /* Full width dark background */
     display: flex;
-    flex-direction: row;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Optional: Slight gradient overlay */
+.features-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent 40%);
+    pointer-events: none;
+}
+
+.features-container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    /* border: 1px solid black; */
-  
+    gap: 70px;
+    position: relative;
+    z-index: 2;
 }
 
-.row1con{
-    /* border: 1px solid black; */
-    height: 300px;
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-}
-
-h1{
-    color: #092347;
+/* --- Header --- */
+.features-header {
     text-align: center;
-    margin-bottom: 50px;
-}
-h1 span{
-    color: orangered;
-}
-.mainbox2{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    
-    /* border: 1px solid black; */
-    background-color: #f6f5f0;
+    max-width: 700px;
 }
 
-.row1con2{
-    /* border: 1px solid black; */
-    height: 300px;
-    width: 400px;
+.features-header h2 {
+    font-size: 2.8rem;
+    color: var(--text-light);
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.highlight-brand {
+    color: var(--primary);
+    position: relative;
+    display: inline-block;
+}
+
+.features-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-gray-light);
+    line-height: 1.6;
+}
+
+/* --- Grid --- */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 Columns on Desktop */
+    gap: 30px;
+    width: 100%;
+}
+
+.feature-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    /* Glass effect */
+    padding: 40px 30px;
+    border-radius: 20px;
+    border: 1px solid var(--border-dark);
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
 }
-.Content3{
-    /* border: 1px solid  black; */
-  
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+}
+
+.icon-wrapper {
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1));
+    border-radius: 16px;
     display: flex;
-    flex-direction: row;
+    align-items: center;
     justify-content: center;
-    gap: 2%;
+    margin-bottom: 5px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.icon-wrapper img {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) invert(1);
+    /* Make icons white */
+}
+
+.feature-card h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.feature-card p {
+    font-size: 1rem;
+    color: var(--text-gray-light);
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* --- CTA Section --- */
+.features-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.cta-button {
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
+    color: white;
+    padding: 18px 45px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px -5px rgba(37, 99, 235, 0.6);
+    filter: brightness(1.1);
+}
+
+.cta-note {
+    font-size: 0.9rem;
+    color: var(--text-gray-light);
+    opacity: 0.8;
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 Columns on Tablet */
     }
-.maincontent{
-    display: flex;
-    flex-direction: column;
-    background-color: #f6f5f0;
-    
 }
-.maincontent img{
-    height: 70px;
-}
-.maincontent p{
-    color: #092347;
-    color:  #002d6b;
-}
-.resumebtn{
-    border-radius: 60px ;
-    width: 180px;
-    justify-content: center;
-    margin-left: 700px;
-    height: 50px;
-    background-color: #02818c;
-    color: #f6f5f0;
-    font-weight: bolder;
+
+@media (max-width: 576px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+        /* 1 Column on Mobile */
+    }
+
+    .features-header h2 {
+        font-size: 2.2rem;
+    }
+
+    .features-section {
+        padding: 60px 20px;
+    }
 }

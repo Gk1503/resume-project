@@ -1,82 +1,62 @@
-import React, { useContext, useEffect, useState } from "react";
-import "../WorkHistory/WorkHistory.css";
-import axios from "axios";
+import React, { useContext, useEffect, useCallback } from "react";
+import "./WorkHistory.css";
+import api from "../../../../utils/api.config";
+import { ENDPOINTS } from "../../../../utils/constant";
 import FormContext from "../../Context/FormContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faBriefcase, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
 function WorkHistory() {
-  const { workHistory, setworkHistory, isFresher, setIsFresher } = useContext(FormContext);
-  const [savedWorkHistory, setSavedWorkHistory] = useState([]);
-  const [message, setMessage] = useState("");
+  const { 
+    activeWorkHistory, setActiveWorkHistory, 
+    workHistoryList, setWorkHistoryList,
+    isFresher, setIsFresher 
+  } = useContext(FormContext);
 
-  // Fetch saved work history on mount
+  const fetchWorkHistory = useCallback(async () => {
+    try {
+      const res = await api.get(ENDPOINTS.GET_WORK_HISTORY);
+      setWorkHistoryList(res.data);
+    } catch (err) {
+      console.error("Error fetching work history:", err);
+    }
+  }, [setWorkHistoryList]);
+
   useEffect(() => {
-    const fetchWorkHistory = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
-        const res = await axios.get("http://localhost:5000/work-history/get", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setSavedWorkHistory(res.data);
-      } catch (err) {
-        console.error("Error fetching work history:", err);
-      }
-    };
     fetchWorkHistory();
-  }, []);
+  }, [fetchWorkHistory]);
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setworkHistory((prev) => ({ ...prev, [name]: value }));
+    setActiveWorkHistory((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Toggle Fresher
   const handleToggleFresher = () => {
     setIsFresher((prev) => !prev);
-    if (!isFresher) {
-      setworkHistory({}); // Clear work history fields if Fresher
-    }
+    if (!isFresher) setActiveWorkHistory({});
   };
 
-  // Save work history
-  const handleSave = async () => {
+  const handleSave = async (e) => {
+    if (e) e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setMessage("❌ You must be logged in to save work history.");
-        return;
-      }
-
-      const res = await axios.post(
-        "http://localhost:5000/work-history/save",
-        { ...workHistory, isFresher },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setMessage("✅ " + res.data.message);
-      setSavedWorkHistory((prev) => [res.data.data, ...prev]);
-      setworkHistory({});
-      if (isFresher) setIsFresher(true);
+      const res = await api.post(ENDPOINTS.SAVE_WORK_HISTORY, { ...activeWorkHistory, isFresher });
+      setWorkHistoryList(res.data.data ? [res.data.data, ...workHistoryList] : res.data); // Backend might return full list or single item
+      // Re-fetch to be safe and consistent with Education
+      const updated = await api.get(ENDPOINTS.GET_WORK_HISTORY);
+      setWorkHistoryList(updated.data);
+      
+      setActiveWorkHistory({});
     } catch (err) {
-      console.error(err);
-      setMessage(err.response?.data?.message || "❌ Failed to save work history.");
+      console.error("Failed to save work history:", err);
     }
   };
 
-  // Delete work history
   const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/work-history/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setSavedWorkHistory((prev) => prev.filter((item) => item._id !== id));
-      setMessage("✅ Work history deleted");
+      await api.delete(`${ENDPOINTS.DELETE_WORK_HISTORY}/${id}`);
+      setWorkHistoryList((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
-      console.error(err);
-      setMessage("❌ Failed to delete work history");
+      console.error("Failed to delete work history:", err);
     }
   };
 
@@ -85,28 +65,45 @@ function WorkHistory() {
       <h1 className="form-title">Tell us about your most recent job</h1>
       <p className="form-subtitle">We’ll start there and work backward.</p>
 
-      <form className="work-form">
+      <div className="fresher-section">
+        <div className="fresher-info">
+          <h5>Are you a student or fresh graduate?</h5>
+          <p>Toggle this if you don't have work experience yet.</p>
+        </div>
+        <div className="fresher-toggle-wrap">
+          <button 
+            type="button" 
+            onClick={handleToggleFresher} 
+            className={`fresher-btn ${isFresher ? "active" : ""}`}
+          >
+             <FontAwesomeIcon icon={isFresher ? faGraduationCap : faBriefcase} className="me-2" />
+             {isFresher ? "I'm a Fresher" : "Experienced"}
+          </button>
+        </div>
+      </div>
+
+      <form className="work-form" onSubmit={handleSave}>
         {!isFresher && (
           <>
             <div className="workone">
-              <div className="form-group one">
-                <label>What was your title? *</label>
+              <div className="form-group">
+                <label>Job Title *</label>
                 <input
                   type="text"
                   name="JobTitle"
-                  value={workHistory.JobTitle || ""}
+                  value={activeWorkHistory.JobTitle || ""}
                   onChange={handleChange}
                   placeholder="e.g. Software Developer"
                   required
                 />
               </div>
 
-              <div className="form-group two">
-                <label>Employer *</label>
+              <div className="form-group">
+                <label>Employer / Company *</label>
                 <input
                   type="text"
                   name="Employer"
-                  value={workHistory.Employer || ""}
+                  value={activeWorkHistory.Employer || ""}
                   onChange={handleChange}
                   placeholder="e.g. Tech Corp"
                   required
@@ -114,12 +111,12 @@ function WorkHistory() {
               </div>
             </div>
 
-            <div className="form-group local">
+            <div className="form-group">
               <label>Location</label>
               <input
                 type="text"
                 name="JobLocation"
-                value={workHistory.JobLocation || ""}
+                value={activeWorkHistory.JobLocation || ""}
                 onChange={handleChange}
                 placeholder="e.g. New Delhi, India"
               />
@@ -131,23 +128,23 @@ function WorkHistory() {
                 <div className="date-inputs">
                   <select
                     name="JobStartMonth"
-                    value={workHistory.JobStartMonth || ""}
+                    value={activeWorkHistory.JobStartMonth || ""}
                     onChange={handleChange}
                   >
                     <option value="">Month</option>
                     {[
-                      "January","February","March","April","May","June","July","August","September","October","November","December"
+                      "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
                     ].map((month) => (
                       <option key={month} value={month}>{month}</option>
                     ))}
                   </select>
                   <select
                     name="JobStartYear"
-                    value={workHistory.JobStartYear || ""}
+                    value={activeWorkHistory.JobStartYear || ""}
                     onChange={handleChange}
                   >
                     <option value="">Year</option>
-                    {Array.from({ length: 20 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                    {Array.from({ length: 40 }, (_, i) => new Date().getFullYear() - i).map((year) => (
                       <option key={year} value={year}>{year}</option>
                     ))}
                   </select>
@@ -159,23 +156,23 @@ function WorkHistory() {
                 <div className="date-inputs">
                   <select
                     name="JobEndMonth"
-                    value={workHistory.JobEndMonth || ""}
+                    value={activeWorkHistory.JobEndMonth || ""}
                     onChange={handleChange}
                   >
                     <option value="">Month</option>
                     {[
-                      "January","February","March","April","May","June","July","August","September","October","November","December"
+                      "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
                     ].map((month) => (
                       <option key={month} value={month}>{month}</option>
                     ))}
                   </select>
                   <select
                     name="JobEndYear"
-                    value={workHistory.JobEndYear || ""}
+                    value={activeWorkHistory.JobEndYear || ""}
                     onChange={handleChange}
                   >
                     <option value="">Year</option>
-                    {Array.from({ length: 20 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                    {Array.from({ length: 40 }, (_, i) => new Date().getFullYear() - i).map((year) => (
                       <option key={year} value={year}>{year}</option>
                     ))}
                   </select>
@@ -185,53 +182,27 @@ function WorkHistory() {
           </>
         )}
 
-        <div className="fresher-button-container">
-          <button type="button" onClick={handleToggleFresher} className={`fresher-btn ${isFresher ? "active" : ""}`}>
-            {isFresher ? "I am not Fresher" : "Fresher"}
-          </button>
-        </div>
-
-        <div className="save-button-container">
-          <button type="button" onClick={handleSave} className="save-btn">
-            Save
-          </button>
-        </div>
+        <button type="submit" id="work-form-submit" style={{ display: "none" }}></button>
       </form>
 
-      {message && <p className="status-message">{message}</p>}
-
-      {/* Table of saved work history */}
-      {savedWorkHistory.length > 0 && (
-        <div className="work-history-table">
-          <h3>Saved Work History</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Employer</th>
-                <th>Location</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Fresher</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {savedWorkHistory.map((item) => (
-                <tr key={item._id}>
-                  <td>{item.JobTitle || "-"}</td>
-                  <td>{item.Employer || "-"}</td>
-                  <td>{item.JobLocation || "-"}</td>
-                  <td>{item.JobStartMonth}/{item.JobStartYear}</td>
-                  <td>{item.JobEndMonth}/{item.JobEndYear}</td>
-                  <td>{item.isFresher ? "Yes" : "No"}</td>
-                  <td>
-                    <button onClick={() => handleDelete(item._id)} className="delete-btn">Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {workHistoryList.length > 0 && (
+        <div className="work-history-cards-wrap">
+          <h3>Successfully Added</h3>
+          <div className="history-cards-grid">
+            {workHistoryList.map((item) => (
+              <div className="history-card" key={item._id}>
+                <div className="hist-info">
+                  <h4>{item.JobTitle || (item.isFresher ? "Fresher Path" : "No Title")}</h4>
+                  <p>{item.Employer || "Self-employed"} • {item.JobStartYear} - {item.JobEndYear || "Present"}</p>
+                </div>
+                <div className="hist-actions">
+                  <button onClick={() => handleDelete(item._id)} className="delete-btn">
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

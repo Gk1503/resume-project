@@ -13,17 +13,11 @@ function Home() {
 return(
 
 <>
-<Container>
-    <Row>
-        <Col md={12} className="navbar"><Navbar/></Col>
-    </Row>
-
     <Row>
         <div className="container-fluid">
         <Col md={12}><BN/></Col>
         </div>
     </Row>
-</Container>
 
 <div>
 <Content></Content>

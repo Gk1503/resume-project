@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "../Content2/Cont2.css";
+import React from "react";
+import "./Cont2.css";
 import Rocket from "../Gallery/rocket.svg";
 import Bulb from "../Gallery/bulb.svg";
 import Checklist from "../Gallery/checklist.svg";
@@ -7,148 +7,94 @@ import Cloud from "../Gallery/cloud.svg";
 import Smile from "../Gallery/smile.svg";
 import Suitcase from "../Gallery/suitcase.svg";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
+function Content2() {
+    const navigate = useNavigate();
 
-function Content2 () {
+    const OpenDesgin = () => {
+        navigate('/DesginOne');
+    }
 
-const navigate = useNavigate();
+    const features = [
+        {
+            id: 1,
+            title: "Build in Minutes",
+            description: "Effortlessly craft a compelling resume with our builder. Convert it to a Bold.pro profile to elevate your presence.",
+            icon: Rocket,
+            delay: "0"
+        },
+        {
+            id: 2,
+            title: "ATS-Friendly Templates",
+            description: "Select from 40+ professionally designed templates built to pass Applicant Tracking Systems (ATS) and impress recruiters.",
+            icon: Smile,
+            delay: "100"
+        },
+        {
+            id: 3,
+            title: "Expert Content",
+            description: "Overcome writer’s block with ready-made content suggestions. Click to add skills bullets tailored to your industry.",
+            icon: Checklist,
+            delay: "200"
+        },
+        {
+            id: 4,
+            title: "ATS Smart Scan",
+            description: "Use our checker to scan for 30+ common errors. Get instant feedback and fixes to improve your resume score.",
+            icon: Cloud,
+            delay: "0"
+        },
+        {
+            id: 5,
+            title: "Professional Samples",
+            description: "Get inspired by thousands of resume and cover letter examples for any job title, written by career experts.",
+            icon: Bulb,
+            delay: "100"
+        },
+        {
+            id: 6,
+            title: "Expert Support",
+            description: "Get help from our career center or contact our dedicated customer support team for any account needs.",
+            icon: Suitcase,
+            delay: "200"
+        }
+    ];
 
-const OpenDesgin = () => {
+    return (
+        <section className="features-section">
+            <div className="features-container">
+                
+                <div className="features-header">
+                    <h2>Get Hired Fast With <span className="highlight-brand">MyPerfectResume</span></h2>
+                    <p className="features-subtitle">
+                        Powerful tools to help you build a professional resume that stands out.
+                    </p>
+                </div>
 
-navigate('/DesginOne');
+                <div className="features-grid">
+                    {features.map((item) => (
+                        <div key={item.id} className="feature-card">
+                            <div className="icon-wrapper">
+                                <img src={item.icon} alt={item.title} />
+                            </div>
+                            <h3>{item.title}</h3>
+                            <p>{item.description}</p>
+                        </div>
+                    ))}
+                </div>
 
+                <div className="features-cta">
+                    <button className="cta-button" onClick={OpenDesgin}>
+                        Build My Resume <FontAwesomeIcon icon={faArrowRight} />
+                    </button>
+                    <p className="cta-note">Try it for free. No credit card required.</p>
+                </div>
+
+            </div>
+        </section>
+    );
 }
 
-
-const [displaycontent ,setDisplaycontent] = useState([
-{
-    Content :"1",
-    ContentHeading: "Build a professional resume in minutes",
-    ContentDes:"Effortlessly craft a compelling resume with our Resume Builder. Convert your resume into a free Bold.pro online profile to elevate your digital presence and grow your professional network.",
-    ContentImg : Rocket,
-},
-{
-    Content:"2" ,
-    ContentHeading : "Select from 40+ ATS-friendly templates",
-    ContentDes: "Make an ATS-friendly resume with customizable, professionally designed resume templates built to pass applicant tracking systems (ATS) and impress recruiters.",
-    ContentImg : Smile,
-
-
-},
-{
-    Content:"3" ,
-    ContentHeading : "Click to add expert content suggestions",
-    ContentDes: "Overcome writer’s block with ready-made content from professional resume analysts. Click or tap to add skills and work history bullet points tailored to your experience.",
-    ContentImg : Checklist,
-
-
-},
-
-
-]);
-
-const [displaycontent2 ,setDisplaycontent2] = useState([
-
-    {
-        Content:"4" ,
-        ContentHeading : "Scan your resume for ATS compatibility",
-        ContentDes: "Use our mobile-friendly ATS Resume Checker to scan your resume for 30+ common errors. Tap to implement expert-recommended fixes to improve your resume score.",
-        ContentImg : Cloud,
-    
-    
-    },
-    {
-        Content:"5" ,
-        ContentHeading : "Get inspired by professionally made samples",
-        ContentDes: "Explore resume examples and cover letter examples for any position. Our samples are professionally written and crafted according to industry standards.",
-        ContentImg : Bulb,
-    
-    
-    },
-    {
-        Content:"6" ,
-        ContentHeading : "Outperform the competition with expert help",
-        ContentDes: "Visit our career center for expert advice on navigating your job search, or contact our dedicated customer support team for your account needs.  ",
-        ContentImg : Suitcase,
-    
-    
-    },
-    
-    
-
-])
-
-
-
-return(
-<>
-<div className="maincontent">
-<div><h1>Get Hired Fast With <span>MyPerfectResume</span></h1></div>    
-
-<div className="Content2">
-
-   
-    {displaycontent.map(item => { 
-        return(
-           
-            <>
-             <div className="mainbox">
-             <div className="row1con">
-           <div> <img src={item.ContentImg} /></div>
-           <div>   <h2>{item.ContentHeading}</h2></div>
-           <div> <p>{item.ContentDes}</p></div>
-            
-            
-</div>
-</div>
-
-
-            
-            </>
-        );
-
-
-
-    })} 
-    </div>
-    <div className="Content3">
-      {displaycontent2.map(item => { 
-        return(
-           
-            <>
-             <div className="mainbox2">
-             <div className="row1con2">
-           <div> <img src={item.ContentImg} /></div>
-           <div>   <h2>{item.ContentHeading}</h2></div>
-           <div> <p> {item.ContentDes}</p></div>
-            
-            
-</div>
-</div>
-
-
-            
-            </>
-        );
-
-
-
-    })} 
-    </div>
- <button className="resumebtn"onClick={OpenDesgin}>Build my resume</button>
-
-    </div>
-
-</>
-
-
-
-)
-
-
-
-
-}
-
-export default Content2 ;
-
+export default Content2;

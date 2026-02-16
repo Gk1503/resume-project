@@ -1,3 +1,4 @@
+// server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -13,8 +14,8 @@ const personalDetailsRoutes = require("./routes/personalDetailsRoutes");
 const workHistoryRoutes = require("./routes/workHistoryRoutes");
 const skillRoutes = require("./routes/skillRoutes");
 const summaryRoutes = require("./routes/summaryRoutes");
-const resumeRoutes = require("./routes/resumeRoutes");
-
+const resumeRoutes = require("./routes/resume");
+const authMiddleware = require("./middleware/authMiddleware");
 
 const app = express();
 app.use(express.json());
@@ -22,7 +23,7 @@ app.use(cors());
 
 // -------------------- MongoDB Connection --------------------
 mongoose
-  .connect("mongodb://127.0.0.1:27017/resume_app", {
+  .connect("mongodb://127.0.0.1:27017/Resume_builder", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -37,6 +38,9 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
+
+// -------------------- In-memory OTP store --------------------
+const otpStore = {}; // { "email": { otp: "123456", expires: Date } }
 
 // -------------------- Register API --------------------
 app.post("/register", async (req, res) => {
@@ -90,10 +94,109 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// -------------------- Other APIs (forgot-password, reset-password etc.) --------------------
-// (keep your existing forgot-password, verify-otp, reset-password, get-resume APIs here)
+// -------------------- Forgot Password --------------------
+app.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-// -------------------- Education Routes --------------------
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    otpStore[email] = { otp, expires: Date.now() + 10 * 60 * 1000 }; // 10 mins
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Your OTP for Password Reset",
+      text: `Your OTP is ${otp}. It is valid for 10 minutes.`,
+    });
+
+    res.json({ message: "OTP sent to your email" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// -------------------- Verify OTP --------------------
+app.post("/verify-otp", (req, res) => {
+  const { email, otp } = req.body;
+  const record = otpStore[email];
+  if (!record) return res.status(400).json({ message: "OTP not found, please request again" });
+
+  if (record.expires < Date.now()) {
+    delete otpStore[email];
+    return res.status(400).json({ message: "OTP expired" });
+  }
+
+  if (record.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
+
+  delete otpStore[email]; // remove after verification
+  res.json({ message: "OTP verified successfully" });
+});
+
+// -------------------- Reset Password --------------------
+app.post("/reset-password", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: "Password reset successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// -------------------- Profile APIs --------------------
+// Get Profile
+app.get("/profile", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) return res.status(401).json({ message: "Session invalid. User not found." });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// Update Phone
+app.post("/profile/update-phone", authMiddleware, async (req, res) => {
+  try {
+    const { phone } = req.body;
+    const user = await User.findByIdAndUpdate(req.user.id, { phone }, { new: true }).select("-password");
+    res.json({ message: "Phone updated successfully", user });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// Change Password
+app.post("/profile/change-password", authMiddleware, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(401).json({ message: "Session invalid. User not found." });
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid current password" });
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// -------------------- Other Routes --------------------
 app.use("/education", educationRoutes);
 app.use("/personal-details", personalDetailsRoutes);
 app.use("/work-history", workHistoryRoutes);

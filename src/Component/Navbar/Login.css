@@ -1,105 +1,243 @@
-/* --- Login Modal Base --- */
-.login-modal-dialog {
-  max-width: 420px;
-  animation: login-fade-in 0.4s ease forwards;
-}
+/* Luminal Design Concept - Premium Light Theme Login */
 
-@keyframes login-fade-in {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.login-modal-content {
-  border: none;
-  border-radius: 15px;
+#aura-login-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  /* Soft Slate White */
+  position: relative;
   overflow: hidden;
-  background: #fff;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  padding: 40px;
 }
 
-/* --- Header --- */
-.login-modal-header {
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  color: #fff;
-  border-bottom: none;
-  padding: 20px;
+/* Soft Luminal Gradient */
+.aura-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: lumPulse 12s infinite alternate ease-in-out;
+  z-index: 1;
+}
+
+@keyframes lumPulse {
+  0% {
+    transform: translate(-10%, -10%) scale(1);
+  }
+
+  100% {
+    transform: translate(10%, 10%) scale(1.1);
+  }
+}
+
+#aura-login-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 40px;
+  padding: 40px;
+  z-index: 10;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05),
+    0 1px 3px rgba(0, 0, 0, 0.01);
   text-align: center;
 }
 
-.login-modal-title {
-  font-size: 1.6rem;
-  font-weight: 700;
+.aura-header {
+  margin-bottom: 40px;
 }
 
-/* --- Body --- */
-.login-modal-body {
-  padding: 30px;
-  background-color: #f9fafc;
-}
-
-.login-modal-body .form-label {
-  font-weight: 600;
-  font-size: 14px;
-  color: #333;
-}
-
-.login-modal-body .form-control {
-  border-radius: 12px;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-}
-
-.login-modal-body .form-control:focus {
-  border-color: #6a11cb;
-  box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.25);
-}
-
-/* --- Button --- */
-.login-submit-btn {
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px;
-  font-weight: 700;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  color: #fff;
-  transition: 0.3s ease;
-}
-
-.login-submit-btn:hover {
-  background: linear-gradient(135deg, #2575fc, #6a11cb);
-  transform: translateY(-2px);
-}
-
-/* --- Extra Links --- */
-.login-extra-links {
-  margin-top: 18px;
+.aura-icon-wrap {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  border-radius: 20px;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 1.5rem;
+  color: #fff;
+  box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.3);
 }
 
-.login-extra-links a {
-  font-size: 14px;
-  font-weight: 500;
-  color: #6a11cb;
-  text-decoration: none;
+.aura-header h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
 }
 
-.login-extra-links a:hover {
-  color: #2575fc;
+.aura-header p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+/* Form Styles */
+.aura-form {
+  margin-bottom: 25px;
+}
+
+.aura-field {
+  margin-bottom: 20px;
+}
+
+.aura-input-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.aura-input-wrapper input {
+  width: 100% !important;
+  background: #fff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 18px !important;
+  padding: 16px 20px 16px 55px !important;
+  color: #1e293b !important;
+  font-size: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.aura-input-wrapper input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 0.8 !important;
+}
+
+.aura-input-wrapper input:focus {
+  border-color: #6366f1 !important;
+  background: #fff !important;
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
+}
+
+.underglow {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: #6366f1;
+  opacity: 0;
+  transform: scaleX(0);
+  transition: all 0.4s ease;
+}
+
+.aura-input-wrapper input:focus~.underglow {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.aura-extras {
+  text-align: right;
+  margin-top: -10px;
+  margin-bottom: 25px;
+}
+
+.forgot-link {
+  font-size: 0.8rem;
+  color: #6366f1;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.forgot-link:hover {
   text-decoration: underline;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .login-modal-dialog {
-    max-width: 90%;
+#btn-aura-submit {
+  width: 100%;
+  padding: 16px;
+  background: #6366f1 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 20px !important;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-top: 5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+}
+
+#btn-aura-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px -5px rgba(99, 102, 241, 0.5);
+  background: #4f46e5 !important;
+}
+
+.aura-footer {
+  margin-top: 25px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 25px;
+}
+
+.aura-footer p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.aura-footer p span {
+  color: #6366f1;
+  font-weight: 800;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.footer-divider {
+  width: 30px;
+  height: 2px;
+  background: #f1f5f9;
+  margin: 0 auto 15px;
+}
+
+.aura-footer .back-link {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.aura-footer .back-link:hover {
+  color: #64748b;
+}
+
+.aura-alert {
+  border-radius: 12px;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+.aura-alert.alert-success {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #34d399 !important;
+}
+
+/* Screen Fit Adjustment */
+@media (max-height: 800px) {
+  #aura-login-card {
+    padding: 30px;
+    border-radius: 30px;
+  }
+
+  .aura-header {
+    margin-bottom: 25px;
+  }
+
+  #btn-aura-submit {
+    padding: 14px;
   }
 }

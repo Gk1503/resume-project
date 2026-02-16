@@ -1,18 +1,52 @@
 .custom-modal .modal-content {
-  width: 1100px;
-  height: 800px;
-  justify-content: center;
-  margin-left: -170px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
+  border: none;
 }
 
 .sec {
   height: 40px;
   font-weight: 500;
 }
-.Downloadbtn{
-  height: 40px;
-  
+
+.downloadbtn {
+  height: 50px;
+
+}
+
+.closebtn {
+  height: 50px;
+}
+
+.preview-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.template-card {
+  transition: all 0.2s ease;
+  user-select: none;
+  min-width: 120px;
+}
+
+.template-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.pdf-container {
+  background-color: #f1f5f9;
+}
+
+.template-dot {
+  box-shadow: 0 0 0 2px white, 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.modal-header {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.modal-footer {
+  border-top: 1px solid #f1f5f9;
 }

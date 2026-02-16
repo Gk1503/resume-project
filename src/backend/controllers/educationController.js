@@ -1,76 +1,50 @@
-const Resume = require("../models/Resume");
+const Education = require("../models/Education");
 
-// Save education
+// Save Education
 exports.saveEducation = async (req, res) => {
   try {
-    const userId = req.user.id; // from middleware
     const { educationDetails } = req.body;
-
-    if (!educationDetails) {
-      return res.status(400).json({ message: "Education details required" });
-    }
-
-    let resume = await Resume.findOne({ user: userId });
-
-    if (!resume) {
-      resume = new Resume({
-        user: userId,
-        educationDetails: [educationDetails],
-      });
-    } else {
-      if (!resume.educationDetails) resume.educationDetails = [];
-      resume.educationDetails.push(educationDetails);
-    }
-
-    await resume.save();
-
-    res.json({
-      message: "Education saved successfully",
-      education: resume.educationDetails,
-    });
-  } catch (err) {
-    console.error("Save Education Error:", err);
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
-
-// Delete education
-exports.deleteEducation = async (req, res) => {
-  try {
     const userId = req.user.id;
-    const educationId = req.params.id;
 
-    const updatedResume = await Resume.findOneAndUpdate(
-      { user: userId },
-      { $pull: { educationDetails: { _id: educationId } } },
-      { new: true }
-    );
-
-    if (!updatedResume) {
-      return res.status(404).json({ message: "Resume or education not found" });
+    if (!educationDetails.SchoolName) {
+      return res.status(400).json({ message: "School Name is required" });
     }
 
-    res.json({
-      message: "Education deleted successfully",
-      education: updatedResume.educationDetails,
-    });
+    const newEducation = new Education({ ...educationDetails, userId });
+    await newEducation.save();
+
+    const allEducation = await Education.find({ userId });
+    res.json({ education: allEducation });
   } catch (err) {
-    console.error("Delete Education Error:", err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Error saving education:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-// Fetch user's resume with education
+// Get all education
 exports.getResume = async (req, res) => {
   try {
     const userId = req.user.id;
-    const resume = await Resume.findOne({ user: userId });
-
-    res.json({
-      educationDetails: resume?.educationDetails || [],
-    });
+    const educationDetails = await Education.find({ userId });
+    res.json({ educationDetails });
   } catch (err) {
-    console.error("Get Resume Error:", err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Error fetching education:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Delete Education
+exports.deleteEducation = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    await Education.findOneAndDelete({ _id: id, userId });
+
+    const allEducation = await Education.find({ userId });
+    res.json({ education: allEducation });
+  } catch (err) {
+    console.error("Error deleting education:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };

@@ -1,113 +1,168 @@
+/* Luminal Builder - Skill Form Styling */
+
 .skillContainerUniqueskill {
-    padding: 20px;
-    margin-right: 100px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .skillLayoutUniqueskill {
-    display: flex;
-    gap: 40px;
-  }
-  
-  .recommendedSectionUniqueskill {
-    width: 40%;
-  }
-  
-  .skillListUniqueskill {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .addSkillBtnUniqueskill {
-    
-    background-color:none;
-    color: black;
-    height: 40px;
-    cursor: pointer;
-  }
-  .addSkillBtnUniqueskill:hover{
-    background-color: black;
-  }
-  
-  .ratingSectionUniqueskill {
-    width: 50%;
-  }
-  
-  .skillItemUniqueskill {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .starRatingUniqueskill {
-    cursor: pointer;
-  }
-  
-  .singleStarUniqueskill {
-    font-size: 20px;
-    color: #ccc;
-  }
-  
-  .filledStarUniqueskill {
-    color: #007bff;
-  }
-  
-  /* input[type="text"] {
-    padding: 5px;
-    font-size: 14px;
-    width: 200px;
-  } */
-  
-  .deleteSkillBtnUniqueskill {
-    /* background: transparent; */
-    border: none;
-    /* color: red; */
-    cursor: pointer;
-    font-size: 18px;
-  }
-  .deleteSkillBtnUniqueskill :hover{
-    background-color: pink;
-  }
-  .ratingSectionUniqueskill{
-    height: auto;
-    width: 370px;
-    border: 1px solid black;
-    border-radius: 4%;
-    text-align: center;
-  }
-  .Skillimg{
-   margin-top: 10px;
-    height: 350px;
-    width: 300px;
-  }
-  .subtit{
-    margin-top: -40px;
-  }
-  /* Save Button */
-.saveBtnUniqueskill {
-  display: inline-block;
-  height: 40px;
-  margin-top: 20px;
-  /* padding: 10px 25px; */
-  font-size: 16px;
-  font-weight: 600;
-  color: #fff;
-  background: #4CAF50; /* Green background */
+  padding: 0 0 100px 0;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.skillContainerUniqueskill h1 {
+  color: #1e293b;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.subtit {
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+
+.skillLayoutUniqueskill {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+.skills-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.skills-manager-header h3 {
+  font-size: 1.1rem;
+  color: #1e293b;
+  font-weight: 700;
+  margin: 0;
+}
+
+.addSkillBtnUniqueskill {
+  background: #f1f5f9;
+  color: #475569;
   border: none;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.saveBtnUniqueskill:hover {
-  background: #45a049; /* Slightly darker green on hover */
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+.addSkillBtnUniqueskill:hover {
+  background: #6366f1;
+  color: white;
 }
 
-.saveBtnUniqueskill:active {
-  transform: translateY(1px);
-  box-shadow: 0 3px 4px rgba(0,0,0,0.1);
+/* Skills Rating Grid */
+.skills-grid-lum {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  gap: 16px;
+}
+
+.skill-row-lum {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s;
+}
+
+.skill-row-lum:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.skill-input-wrap input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  padding: 4px 0;
+}
+
+.skill-input-wrap input:focus {
+  outline: none;
+  color: #6366f1;
+}
+
+.skill-input-wrap input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Star Rating Styling */
+.starRatingUniqueskill {
+  display: flex;
+  gap: 4px;
+}
+
+.singleStarUniqueskill {
+  font-size: 1.25rem;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filledStarUniqueskill {
+  color: #fbbf24;
+  /* Golden stars */
+}
+
+.deleteSkillBtnUniqueskill {
+  background: #f1f5f9;
+  color: #64748b;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.deleteSkillBtnUniqueskill:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.status-message {
+  margin-top: 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.text-success {
+  color: #10b981;
+}
+
+.text-danger {
+  color: #ef4444;
+}
+
+/* Hidden save btn */
+.saveBtnUniqueskill {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .skill-row-lum {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 }

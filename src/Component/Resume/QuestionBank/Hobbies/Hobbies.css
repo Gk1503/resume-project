@@ -1,0 +1,54 @@
+.hobbies-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hobbies-manager {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.hobby-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.hobby-input-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1;
+}
+
+.add-hobby-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hobbies-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hobby-tag {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-hobby-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ff4d4d;
+}

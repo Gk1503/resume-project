@@ -1,0 +1,224 @@
+/* Luminal Design Concept - Premium Profile Page */
+
+#luminal-profile-container {
+    min-height: calc(100vh - 80px);
+    /* Adjust for navbar */
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    position: relative;
+    overflow: hidden;
+    padding: 40px 0;
+}
+
+.aura-glow {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+    filter: blur(100px);
+    top: -200px;
+    right: -200px;
+    z-index: 1;
+}
+
+.profile-content {
+    position: relative;
+    z-index: 10;
+}
+
+.profile-header-actions {
+    margin-bottom: 25px;
+}
+
+.btn-back {
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 8px 20px;
+    border-radius: 12px;
+    color: #64748b;
+    font-weight: 600;
+    transition: all 0.3s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-back:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+    transform: translateX(-5px);
+}
+
+.profile-main-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 1);
+    border-radius: 32px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.card-header-premium {
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.user-avatar-wrap {
+    position: relative;
+}
+
+.avatar-initials {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    color: white;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+}
+
+.verified-badge {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: white;
+    color: #22c55e;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-meta h2 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.user-meta p {
+    margin: 5px 0 0;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.card-body-premium {
+    padding: 40px;
+}
+
+.management-sector {
+    background: white;
+    padding: 25px;
+    border-radius: 24px;
+    border: 1px solid #f1f5f9;
+    height: 100%;
+}
+
+.management-sector h3 {
+    font-size: 1.1rem;
+    color: #1e293b;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sector-icon {
+    color: #6366f1;
+}
+
+.lum-form label {
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.lum-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.lum-input-wrapper .input-icon {
+    position: absolute;
+    left: 18px;
+    color: #cbd5e1;
+    font-size: 1.1rem;
+}
+
+.lum-input-wrapper input {
+    padding: 14px 14px 14px 50px !important;
+    border-radius: 14px !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    font-weight: 500 !important;
+    transition: all 0.3s !important;
+}
+
+.lum-input-wrapper input:focus {
+    border-color: #6366f1 !important;
+    background: white !important;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08) !important;
+}
+
+.btn-lum-action {
+    width: 100%;
+    padding: 14px !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    background: #6366f1 !important;
+    border: none !important;
+    transition: all 0.3s !important;
+}
+
+.btn-lum-action.secondary {
+    background: #1e293b !important;
+}
+
+.btn-lum-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+}
+
+.btn-lum-action.secondary:hover {
+    background: #0f172a !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.lum-alert {
+    border-radius: 14px;
+    font-weight: 500;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .card-header-premium {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px;
+    }
+
+    .card-body-premium {
+        padding: 20px;
+    }
+
+    #luminal-profile-container {
+        padding: 20px 0;
+    }
+}

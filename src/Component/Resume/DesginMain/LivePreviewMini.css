@@ -1,0 +1,119 @@
+.mini-photo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.mini-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #6366f1;
+}
+
+.mini-resume-container {
+    padding: 30px;
+    background: white;
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    color: #1e293b;
+    overflow-y: auto;
+}
+
+.mini-header {
+    border-bottom: 2px solid #6366f1;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.mini-name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mini-contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.mini-section {
+    margin-bottom: 20px;
+}
+
+.mini-section-title {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #6366f1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 4px;
+}
+
+.mini-summary-text {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #475569;
+}
+
+.mini-item {
+    margin-bottom: 10px;
+}
+
+.mini-item-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+}
+
+.mini-item-sub {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.mini-skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.mini-skill-tag {
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.active-typing {
+    border-left: 2px solid #6366f1;
+    padding-left: 8px;
+    background: #f8fafc;
+    border-radius: 0 4px 4px 0;
+}
+
+.mini-item-text {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-style: italic;
+}
+
+.mini-contact span:not(:last-child)::after {
+    content: "•";
+    margin-left: 10px;
+    opacity: 0.5;
+}

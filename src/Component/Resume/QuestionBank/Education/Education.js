@@ -1,8 +1,17 @@
-import React, { useState, useEffect } from "react";
-import "../Education/Education.css";
-import axios from "axios";
+import React, { useContext, useEffect, useCallback } from "react";
+import "./Education.css";
+import api from "../../../../utils/api.config";
+import { ENDPOINTS } from "../../../../utils/constant";
+import FormContext from "../../Context/FormContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function Education() {
+  const { 
+    activeEducation, setActiveEducation, 
+    educationList, setEducationList 
+  } = useContext(FormContext);
+
   const emptyEducation = {
     SchoolName: "",
     SchoolLocation: "",
@@ -10,97 +19,86 @@ function Education() {
     FieldOfStudy: "",
     GraduationMonth: "",
     GraduationYear: "",
+    Score: "",
+    GradeType: ""
   };
 
-  const [education, setEducation] = useState(emptyEducation);
-  const [savedEducations, setSavedEducations] = useState([]);
-  const [message, setMessage] = useState("");
+  const fetchEducation = useCallback(async () => {
+    try {
+      const res = await api.get(ENDPOINTS.GET_EDUCATION);
+      const data = res.data.educationDetails || res.data.education || res.data || [];
+      setEducationList(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [setEducationList]);
 
-  // Fetch saved education on component mount
   useEffect(() => {
-    const fetchEducation = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
-        const res = await axios.get(
-          "http://localhost:5000/education/get-resume",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        if (res.data.educationDetails) {
-          setSavedEducations(res.data.educationDetails);
-        }
-      } catch (err) {
-        console.error(err);
-        setMessage("❌ Failed to fetch education.");
-        setTimeout(() => setMessage(""), 3000);
-      }
-    };
     fetchEducation();
-  }, []);
+  }, [fetchEducation]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEducation({ ...education, [name]: value });
-  };
+    
+    // Conditional logic for Degree change
+    if (name === "Degree") {
+      let gradeType = "";
+      if (value === "10th" || value === "12th") gradeType = "Percentage";
+      else if (value) gradeType = "CGPA";
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setMessage("❌ You must be logged in to save education.");
-        return;
-      }
-
-      // Clean default Month/Year values
-      const eduToSave = { ...education };
-      if (eduToSave.GraduationMonth === "Month") eduToSave.GraduationMonth = "";
-      if (eduToSave.GraduationYear === "Year") eduToSave.GraduationYear = "";
-
-      const res = await axios.post(
-        "http://localhost:5000/education/save-education",
-        { educationDetails: eduToSave },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setSavedEducations(res.data.education);
-      setEducation(emptyEducation);
-      setMessage("✅ Education saved successfully!");
-      setTimeout(() => setMessage(""), 3000);
-    } catch (err) {
-      console.error(err);
-      setMessage(err.response?.data?.message || "❌ Failed to save education.");
-      setTimeout(() => setMessage(""), 3000);
+      setActiveEducation({ 
+        ...activeEducation, 
+        Degree: value,
+        FieldOfStudy: "", // Reset field of study on degree change
+        Score: "", // Reset score on degree change
+        GradeType: gradeType
+      });
+    } else {
+      setActiveEducation({ ...activeEducation, [name]: value });
     }
   };
 
-  const handleDelete = async (index) => {
+  const handleSave = async (e) => {
+    if (e) e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setMessage("❌ You must be logged in to delete education.");
-        return;
+      const eduToSave = { ...activeEducation };
+      
+      // Ensure GradeType is set if not already
+      if (!eduToSave.GradeType && eduToSave.Degree) {
+        if (eduToSave.Degree === "10th" || eduToSave.Degree === "12th") {
+          eduToSave.GradeType = "Percentage";
+        } else {
+           eduToSave.GradeType = "CGPA";
+        }
       }
 
-      const eduId = savedEducations[index]._id;
+      if (eduToSave.GraduationMonth === "Month") eduToSave.GraduationMonth = "";
+      if (eduToSave.GraduationYear === "Year") eduToSave.GraduationYear = "";
 
-      const res = await axios.delete(
-        `http://localhost:5000/education/delete-education/${eduId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      console.log("=== SAVING EDUCATION ===");
+      console.log("Data being sent to API:", eduToSave);
 
-      setSavedEducations(res.data.education);
-      setMessage("🗑️ Education deleted successfully!");
-      setTimeout(() => setMessage(""), 3000);
+      const res = await api.post(ENDPOINTS.SAVE_EDUCATION, { educationDetails: eduToSave });
+
+      console.log("API Response:", res.data);
+
+      const data = res.data.educationDetails || res.data.education || res.data || [];
+      console.log("Extracted education list:", data);
+      
+      setEducationList(Array.isArray(data) ? data : educationList); 
+      setActiveEducation(emptyEducation);
     } catch (err) {
-      console.error(err);
-      setMessage(err.response?.data?.message || "❌ Failed to delete education.");
-      setTimeout(() => setMessage(""), 3000);
+      console.error("Failed to save education:", err);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await api.delete(`${ENDPOINTS.DELETE_EDUCATION}/${id}`);
+      const data = res.data.educationDetails || res.data.education || res.data || [];
+      setEducationList(Array.isArray(data) ? data : educationList.filter((item) => item._id !== id));
+    } catch (err) {
+      console.error("Failed to delete education:", err);
     }
   };
 
@@ -111,7 +109,6 @@ function Education() {
         Enter your education experience so far, even if you are a current student or did not graduate.
       </p>
 
-      {/* Education Form */}
       <form className="education-form" onSubmit={handleSave}>
         <div className="form-row">
           <div className="form-group">
@@ -119,7 +116,7 @@ function Education() {
             <input
               name="SchoolName"
               type="text"
-              value={education.SchoolName}
+              value={activeEducation.SchoolName || ""}
               onChange={handleChange}
               placeholder="e.g. Oxford Software Institute"
               required
@@ -130,7 +127,7 @@ function Education() {
             <input
               name="SchoolLocation"
               type="text"
-              value={education.SchoolLocation}
+              value={activeEducation.SchoolLocation || ""}
               onChange={handleChange}
               placeholder="e.g. New Delhi, India"
             />
@@ -138,39 +135,70 @@ function Education() {
         </div>
 
         <div className="form-row">
-          <div className="form-group fullwidth">
+          <div className="form-group">
             <label>Degree</label>
             <select
               name="Degree"
-              value={education.Degree}
+              value={activeEducation.Degree || ""}
               onChange={handleChange}
             >
-              <option value="">Select</option>
-              <option value="bachelor">Bachelor’s</option>
-              <option value="master">Master’s</option>
-              <option value="phd">Ph.D</option>
-              <option value="diploma">Diploma</option>
+              <option value="">Select Degree</option>
+              <option value="10th">10th Standard</option>
+              <option value="12th">12th Standard</option>
+              <option value="Bachelor's">Bachelor’s</option>
+              <option value="Master's">Master’s</option>
+              <option value="Ph.D">Ph.D</option>
+              <option value="Diploma">Diploma</option>
+              <option value="Associate">Associate Degree</option>
             </select>
           </div>
+
+          {activeEducation.Degree !== "10th" && (
+            <div className="form-group">
+              <label>Field of Study</label>
+              {activeEducation.Degree === "12th" ? (
+                <select 
+                  name="FieldOfStudy"
+                  value={activeEducation.FieldOfStudy || ""}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Stream</option>
+                  <option value="Science">Science</option>
+                  <option value="Commerce">Commerce</option>
+                  <option value="Arts">Arts</option>
+                  <option value="Other">Other</option>
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  name="FieldOfStudy"
+                  value={activeEducation.FieldOfStudy || ""}
+                  onChange={handleChange}
+                  placeholder="e.g. Financial Accounting"
+                />
+              )}
+            </div>
+          )}
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Field of Study</label>
-            <input
-              type="text"
-              name="FieldOfStudy"
-              value={education.FieldOfStudy}
-              onChange={handleChange}
-              placeholder="e.g. Financial Accounting"
-            />
+             <label>{activeEducation.GradeType === "Percentage" ? "Percentage (%)" : "CGPA"}</label>
+             <input
+                type="text"
+                name="Score"
+                value={activeEducation.Score || ""}
+                onChange={handleChange}
+                placeholder={activeEducation.GradeType === "Percentage" ? "e.g. 85" : "e.g. 8.5/10"}
+             />
           </div>
+
           <div className="form-group">
-            <label>Graduation Date (or expected)</label>
+            <label>Graduation Year (or expected)</label>
             <div className="grad-date-selectors">
               <select
                 name="GraduationMonth"
-                value={education.GraduationMonth}
+                value={activeEducation.GraduationMonth || ""}
                 onChange={handleChange}
               >
                 <option>Month</option>
@@ -183,11 +211,11 @@ function Education() {
               </select>
               <select
                 name="GraduationYear"
-                value={education.GraduationYear}
+                value={activeEducation.GraduationYear || ""}
                 onChange={handleChange}
               >
                 <option>Year</option>
-                {Array.from({ length: 20 }, (_, i) => new Date().getFullYear() + i).map(
+                {Array.from({ length: 30 }, (_, i) => new Date().getFullYear() + 5 - i).map(
                   (year) => <option key={year} value={year}>{year}</option>
                 )}
               </select>
@@ -195,54 +223,34 @@ function Education() {
           </div>
         </div>
 
-        <div className="form-row">
-          <button type="submit" className="save-btn">
-            💾 Save Education
+        <div className="btn-row mt-3">
+          <button type="submit" className="btn btn-primary w-100">
+            Save Education
           </button>
         </div>
+
+        {/* Hidden Trigger for Global Nav */}
+        <button type="submit" id="education-form-submit" style={{ display: "none" }}></button>
       </form>
 
-      {message && <p className="status-message">{message}</p>}
-
-      {/* Saved Education Table */}
-      {savedEducations.length > 0 && (
-        <div className="saved-education-table">
-          <h3>Saved Education</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>School Name</th>
-                <th>Location</th>
-                <th>Degree</th>
-                <th>Field of Study</th>
-                <th>Graduation Month</th>
-                <th>Graduation Year</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {savedEducations.map((edu, idx) => (
-                <tr key={edu._id || idx}>
-                  <td>{idx + 1}</td>
-                  <td>{edu.SchoolName}</td>
-                  <td>{edu.SchoolLocation}</td>
-                  <td>{edu.Degree}</td>
-                  <td>{edu.FieldOfStudy}</td>
-                  <td>{edu.GraduationMonth}</td>
-                  <td>{edu.GraduationYear}</td>
-                  <td>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(idx)}
-                    >
-                      🗑️ Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {educationList.length > 0 && (
+        <div className="saved-education-list">
+          <h3>Successfully Added</h3>
+          <div className="education-cards-grid">
+            {educationList.map((edu) => (
+              <div className="edu-card" key={edu._id}>
+                <div className="edu-info">
+                  <h4>{edu.SchoolName}</h4>
+                  <p>{edu.Degree} in {edu.FieldOfStudy} • {edu.GraduationYear}</p>
+                </div>
+                <div className="edu-actions">
+                  <button className="delete-btn" onClick={() => handleDelete(edu._id)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

@@ -1,19 +1,178 @@
-.MainDesgin{
-    display: flex;
-    flex-direction: row;
-}
-.Resumeimg{
-    height: 450px;
-    margin-top: 120px;
-    margin-left:20px;
-    
-}
-#nextclickbtn{
-    margin-top: 20px;
-    border: 1px solid blue;
-    width: 120px;
-}
-#nextclickbtn:hover{
-    background-color: green;
+/* Luminal Builder - Structural Framework */
 
+.MainDesgin {
+    display: grid;
+    grid-template-columns: 280px 1fr 400px;
+    height: calc(100vh - 80px);
+    /* Fill screen minus Navbar */
+    background: #f8fafc;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Sidebar Container */
+.DesginLeft {
+    height: 100%;
+    border-right: 1px solid #e2e8f0;
+    background: white;
+    z-index: 20;
+}
+
+/* Content Area (Forms) */
+.DesginRight {
+    padding: 40px;
+    padding-bottom: 100px;
+    /* Clearance for footer */
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* Form Container Inside Panel */
+.form-center-panel {
+    width: 100%;
+    max-width: 650px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Preview Panel */
+.preview-panel-sidebar {
+    background: #eff6ff;
+    /* Soft blue background for preview contrast */
+    border-left: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Paper Silhouette Silhouette */
+.resume-paper-preview {
+    width: 100%;
+    aspect-ratio: 1 / 1.41;
+    /* A4 Ratio */
+    background: white;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    position: relative;
+    transform: translateY(-20px);
+    transition: all 0.3s;
+    overflow: hidden;
+    padding: 30px;
+}
+
+.resume-paper-preview:hover {
+    transform: translateY(-25px);
+    box-shadow: 0 50px 90px rgba(0, 0, 0, 0.1);
+}
+
+/* Skeleton loader for preview */
+.preview-skeleton {
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.skeleton-line {
+    height: 10px;
+    background: #1e293b;
+    margin-bottom: 12px;
+    border-radius: 4px;
+}
+
+.app-navigation-footer {
+    position: absolute;
+    bottom: 0;
+    left: 280px;
+    /* Offset by sidebar */
+    right: 400px;
+    /* Offset by preview */
+    background: white;
+    border-top: 1px solid #f1f5f9;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 30;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.02);
+}
+
+.btn-builder-nav {
+    padding: 12px 32px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.3s;
+    border: none;
+    font-size: 0.95rem;
+}
+
+.btn-prev {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.btn-prev:hover {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.btn-next {
+    background: #1e293b;
+    color: white;
+    box-shadow: 0 4px 12px rgba(30, 41, 59, 0.1);
+}
+
+.btn-next:hover {
+    background: #0f172a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(30, 41, 59, 0.15);
+}
+
+#previewbtn,
+.btn-preview {
+    background: #6366f1;
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+#previewbtn:hover,
+.btn-preview:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+}
+
+.final-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1200px) {
+    .MainDesgin {
+        grid-template-columns: 240px 1fr;
+    }
+
+    .preview-panel-sidebar {
+        display: none;
+        /* Hide preview on tablet */
+    }
+
+    .app-navigation-footer {
+        right: 0;
+    }
 }

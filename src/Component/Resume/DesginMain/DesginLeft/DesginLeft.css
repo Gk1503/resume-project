@@ -1,58 +1,100 @@
-.Desgin1{
-    border: 1px solid black;
-    height: 720px;
-    width: 300px;
-    background-color: #092347;
-}
-#Desgin1h1tagg h6{
-/* margin-right: 500px; */
-margin-top: 10px;
-font-size: 25px;
-color:white;
-}
-#Desgin1h1tagg span{
-    color: orangered;
-}
-.circle {
-    border-radius: 50%;
-    border: 2px solid white;
-    height: 50px;
-    width: 50px;
-    color: white;
-    font-size: 25px;
-    text-align: center;
-    line-height: 28px;
-    /* font-weight: bold; */
-    background-color: #092347;
-    margin-top: 20px; 
-  }
-    
-  .filledCircle {
-    border-radius: 50%;
-    border: 2px solid white;
-    height: 50px;
-    width: 50px;
-    color: white;
-    font-size: 25px;
-    text-align: center;
-    line-height: 28px;
-    /* font-weight: bold; */
-    background-color: orangered;
-    margin-top: 20px; 
-  }
-  .text {
-    color: whitesmoke;
-    margin-left: 10px;
-    font-size: 25px;
-    margin-top: 20px;
-  }
-  
-.maintag {
-    display: flex;
-    align-items: center;
+/* Luminal Stage Tracker - Sidebar */
 
-    cursor: pointer;
-    margin: 15px 0; 
-    padding-left: 20px;
-  }
-  
+.Desgin1 {
+  background: white;
+  padding: 40px 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+#Desgin1h1tagg {
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+#Desgin1h1tagg h6 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+#Desgin1h1tagg span {
+  color: #6366f1;
+  /* Premium Indigo */
+}
+
+.maintag {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid transparent;
+}
+
+.maintag:hover {
+  background: #f8fafc;
+}
+
+.maintag.active-stage {
+  background: #eff6ff;
+  border-color: #dbeafe;
+}
+
+.circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #64748b;
+  transition: all 0.3s;
+}
+
+.maintag.active-stage .circle {
+  background: #6366f1;
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.filledCircle {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: #22c55e;
+  /* Success Green */
+  color: white;
+  transition: all 0.3s;
+}
+
+.text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
+  transition: all 0.3s;
+}
+
+.maintag.active-stage .text {
+  color: #1e293b;
+}
+
+.maintag:hover:not(.active-stage) .circle {
+  background: #e2e8f0;
+  color: #475569;
+}

@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/authMiddleware");
 const {
   saveEducation,
-  deleteEducation,
   getResume,
+  deleteEducation,
 } = require("../controllers/educationController");
-const authMiddleware = require("../middleware/authMiddleware");
 
-// All routes protected
-router.post("/save-education", authMiddleware, saveEducation);
-router.delete("/delete-education/:id", authMiddleware, deleteEducation);
-router.get("/get-resume", authMiddleware, getResume);
+router.post("/save-education", auth, saveEducation);
+router.get("/get-resume", auth, getResume);
+router.delete("/delete-education/:id", auth, deleteEducation);
 
 module.exports = router;

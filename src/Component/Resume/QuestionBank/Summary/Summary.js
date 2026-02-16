@@ -1,55 +1,38 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import "./Summary.css";
+import api from "../../../../utils/api.config";
+import { ENDPOINTS } from "../../../../utils/constant";
 import FormContext from "../../Context/FormContext";
-import axios from "axios";
 
 function Summary() {
   const { summary, setSummary } = useContext(FormContext);
   const [message, setMessage] = useState("");
 
-  // Fetch summary on mount
-  useEffect(() => {
-    const fetchSummary = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
-        const res = await axios.get("http://localhost:5000/summary/get", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (res.data) setSummary(res.data.content);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchSummary();
-  }, [setSummary]);
-
-  // Save summary
-  const handleSave = async () => {
+  const fetchSummary = useCallback(async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setMessage("❌ Please login to save summary");
-        return;
-      }
-
-      if (!summary || summary.trim() === "") {
-        setMessage("❌ Summary cannot be empty");
-        return;
-      }
-
-      const res = await axios.post(
-        "http://localhost:5000/summary/save",
-        { content: summary },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setMessage("✅ " + res.data.message);
+      const res = await api.get(ENDPOINTS.GET_SUMMARY);
+      if (res.data) setSummary(res.data.content);
     } catch (err) {
       console.error(err);
-      setMessage(err.response?.data?.message || "❌ Failed to save summary");
+    }
+  }, [setSummary]);
+
+  useEffect(() => {
+    fetchSummary();
+  }, [fetchSummary]);
+
+  const handleSave = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      if (!summary || summary.trim() === "") {
+        setMessage("error: Summary cannot be empty");
+        return;
+      }
+      const res = await api.post(ENDPOINTS.SAVE_SUMMARY, { content: summary });
+      setMessage("success: " + res.data.message);
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      setMessage("error: Failed to save summary");
     }
   };
 
@@ -60,18 +43,22 @@ function Summary() {
         Choose from our pre-written examples or write your own.
       </p>
 
-      <textarea
-        className="summary-textarea"
-        placeholder="Write your summary here..."
-        value={summary}
-        onChange={(e) => setSummary(e.target.value)}
-      ></textarea>
+      <form onSubmit={handleSave} className="summary-form">
+        <textarea
+          className="summary-textarea"
+          placeholder="Professional, result-oriented software developer with 5+ years of experience in building scalable web applications..."
+          value={summary}
+          onChange={(e) => setSummary(e.target.value)}
+        ></textarea>
+        
+        <button type="submit" id="summary-form-submit" style={{ display: "none" }}></button>
+      </form>
 
-      <button className="summary-btn save-btn" onClick={handleSave}>
-        💾 Save Summary
-      </button>
-
-      {message && <p className="status-message">{message}</p>}
+      {message && (
+        <p className={`status-message ${message.startsWith("success") ? "text-success" : "text-danger"}`}>
+          {message.split(": ")[1]}
+        </p>
+      )}
     </div>
   );
 }

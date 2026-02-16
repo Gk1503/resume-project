@@ -14,6 +14,10 @@ const personalDetailsSchema = new mongoose.Schema({
   LinkedIn: { type: String, default: "" },
   Website: { type: String, default: "" },
   DrivingLicence: { type: String, default: "" },
+  DateOfBirth: { type: String, default: "" },
+  MaritalStatus: { type: String, default: "" },
+  Photo: { type: String, default: "" },
+  Hobbies: { type: [String], default: [] }, // Adding hobbies here for easier access
 });
 
 module.exports = mongoose.model("PersonalDetails", personalDetailsSchema);

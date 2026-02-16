@@ -1,8 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
-import "../../QuestionBank/Heading/Heading.css";
+import React, { useContext, useState, useEffect, useCallback } from "react";
+import "./Heading.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
+import api from "../../../../utils/api.config";
+import { ENDPOINTS } from "../../../../utils/constant";
 import FormContext from "../../Context/FormContext";
 
 function HeadingQuestion() {
@@ -12,34 +13,24 @@ function HeadingQuestion() {
   const { personalDetails, setPersonalDetails } = useContext(FormContext);
   const [message, setMessage] = useState("");
 
-  // Fetch saved personal details on mount
-  useEffect(() => {
-    const fetchPersonalDetails = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
-        const res = await axios.get("http://localhost:5000/personal-details/get", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (res.data) {
-          setPersonalDetails(res.data);
-
-          // Auto-show optional fields if they have values
-          if (res.data.LinkedIn) setShowLinkedIn(true);
-          if (res.data.Website) setShowWebsite(true);
-          if (res.data.DrivingLicence) setShowDriving(true);
-        }
-      } catch (err) {
-        console.error("❌ Error fetching details:", err);
+  const fetchPersonalDetails = useCallback(async () => {
+    try {
+      const res = await api.get(ENDPOINTS.GET_PERSONAL_DETAILS);
+      if (res.data) {
+        setPersonalDetails(res.data);
+        if (res.data.LinkedIn) setShowLinkedIn(true);
+        if (res.data.Website) setShowWebsite(true);
+        if (res.data.DrivingLicence) setShowDriving(true);
       }
-    };
-
-    fetchPersonalDetails();
+    } catch (err) {
+      console.error("❌ Error fetching details:", err);
+    }
   }, [setPersonalDetails]);
 
-  // Handle input change
+  useEffect(() => {
+    fetchPersonalDetails();
+  }, [fetchPersonalDetails]);
+
   const handleChange = (e) => {
     setPersonalDetails({
       ...personalDetails,
@@ -47,31 +38,16 @@ function HeadingQuestion() {
     });
   };
 
-  // Save / Update details
   const handleSave = async (e) => {
-    e.preventDefault();
-
+    if (e) e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setMessage("❌ You must be logged in to save details.");
-        return;
-      }
-
-      const res = await axios.post(
-        "http://localhost:5000/personal-details/save",
-        personalDetails,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setMessage("✅ " + res.data.message);
+      const res = await api.post(ENDPOINTS.SAVE_PERSONAL_DETAILS, personalDetails);
+      setMessage("success: " + res.data.message);
     } catch (err) {
-      console.error(err);
-      setMessage(err.response?.data?.message || "❌ Failed to save details.");
+      setMessage("error: " + (err.response?.data?.message || "Failed to save details."));
     }
   };
 
-  // Render extra field with delete button
   const renderInputField = (label, showSetter, key) => (
     <div className="input-wrapper">
       <label>{label}</label>
@@ -97,19 +73,16 @@ function HeadingQuestion() {
 
   return (
     <div className="Desgin2">
-      <h1 id="Designhtag">
-        What’s the best way for employers to <br />
-        contact you?
-      </h1>
+      <h1 id="Designhtag">What’s the best way for employers to contact you?</h1>
       <h6 id="Designhtag">We suggest including an email and phone number.</h6>
 
       <div id="indicates">* indicates a required field</div>
 
-      <form onSubmit={handleSave}>
+      <form onSubmit={handleSave} className="lum-builder-form">
         <div className="mainfromdiv">
           <div id="sideone" className="sidedes">
             <div>
-              <label htmlFor="FirstName">FIRSTNAME *</label>
+              <label>First Name *</label>
               <input
                 name="FirstName"
                 type="text"
@@ -121,7 +94,7 @@ function HeadingQuestion() {
             </div>
 
             <div>
-              <label htmlFor="City">CITY *</label>
+              <label>City *</label>
               <input
                 type="text"
                 placeholder="e.g. Mumbai"
@@ -133,7 +106,7 @@ function HeadingQuestion() {
             </div>
 
             <div>
-              <label htmlFor="PhoneNumber">PHONENUMBER *</label>
+              <label>Phone Number *</label>
               <input
                 type="text"
                 placeholder="e.g. +91 22 1234 5677"
@@ -150,7 +123,7 @@ function HeadingQuestion() {
 
           <div id="sidetwo" className="sidedes">
             <div>
-              <label htmlFor="SurName">SURNAME *</label>
+              <label>Surname *</label>
               <input
                 type="text"
                 placeholder="e.g. Patel"
@@ -162,32 +135,34 @@ function HeadingQuestion() {
             </div>
 
             <div id="country">
-              <label htmlFor="Country">COUNTRY *</label>&nbsp;&nbsp;
-              <label htmlFor="Pincode">PINCODE *</label>
-              <br />
-              <input
-                type="text"
-                className="countryy"
-                placeholder="e.g. India"
-                name="Country"
-                value={personalDetails.Country || ""}
-                onChange={handleChange}
-                required
-              />
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <input
-                type="text"
-                className="country"
-                placeholder="e.g. 123456"
-                name="Pincode"
-                value={personalDetails.Pincode || ""}
-                onChange={handleChange}
-                required
-              />
+              <div className="country-unit">
+                <label>Country *</label>
+                <input
+                  type="text"
+                  className="countryy"
+                  placeholder="e.g. India"
+                  name="Country"
+                  value={personalDetails.Country || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="pincode-unit">
+                <label>Pincode *</label>
+                <input
+                  type="text"
+                  className="country"
+                  placeholder="e.g. 123456"
+                  name="Pincode"
+                  value={personalDetails.Pincode || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
 
             <div>
-              <label htmlFor="EmailId">EMAIL *</label>
+              <label>Email *</label>
               <input
                 type="email"
                 placeholder="e.g. Spatel@Sample.in"
@@ -202,25 +177,62 @@ function HeadingQuestion() {
           </div>
         </div>
 
-        {/* Save Button */}
-        <div style={{ marginTop: "20px" }}>
-          <button type="submit" className="save-btn">💾 Save Personal Details</button>
+        <div className="additional-details-section">
+          <h3>Additional Details</h3>
+          <div className="form-row-custom">
+            <div>
+              <label>Date of Birth</label>
+              <input 
+                type="date" 
+                name="DateOfBirth" 
+                value={personalDetails.DateOfBirth || ""} 
+                onChange={handleChange} 
+              />
+            </div>
+            <div>
+              <label>Marital Status</label>
+              <select name="MaritalStatus" value={personalDetails.MaritalStatus || ""} onChange={handleChange}>
+                <option value="">Select Status</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+              </select>
+            </div>
+          </div>
+          
+
         </div>
+
+        {/* Hidden Trigger for Global Nav Save */}
+        <button type="submit" id="heading-form-submit" style={{ display: "none" }}></button>
       </form>
 
-      {message && <p className="status-message">{message}</p>}
+      {message && (
+        <p className={`status-message ${message.startsWith("success") ? "text-success" : "text-danger"}`}>
+          {message.split(": ")[1]}
+        </p>
+      )}
 
       <div className="AdditionalInformation">
-        <h6 className="AdditionalInfor">
-          Add additional information to your resume (optional)
-        </h6>
-        {!showLinkedIn && (
-          <button onClick={() => setShowLinkedIn(true)}>LinkedIn</button>
-        )}
-       
-        {!showWebsite && (
-          <button onClick={() => setShowWebsite(true)}>Website</button>
-        )}
+        <h6 className="AdditionalInfor">Add additional information (optional)</h6>
+        <div className="additional-btn-wrap">
+          {!showLinkedIn && (
+            <button className="btn-add-optional" onClick={() => setShowLinkedIn(true)}>
+              <FontAwesomeIcon icon={faPlus} /> LinkedIn
+            </button>
+          )}
+          {!showWebsite && (
+            <button className="btn-add-optional" onClick={() => setShowWebsite(true)}>
+              <FontAwesomeIcon icon={faPlus} /> Website
+            </button>
+          )}
+          {!showDriving && (
+            <button className="btn-add-optional" onClick={() => setShowDriving(true)}>
+              <FontAwesomeIcon icon={faPlus} /> Driving Licence
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

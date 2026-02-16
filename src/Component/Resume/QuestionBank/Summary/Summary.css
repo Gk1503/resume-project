@@ -1,40 +1,66 @@
-.summary-section-container {
-    max-width: 800px;
-    margin: auto;
-    padding: 30px;
-    font-family: 'Segoe UI', sans-serif;
+/* Luminal Builder - Summary Form Styling */
 
-  }
-  
-  .summary-heading {
-    font-size: 30px;
-    margin-bottom: 10px;
-    color: #1f2d3d;
-    margin-top: 100px;
-  }
-  
-  .summary-subtext {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 20px;
-  }
-  
-  .summary-textarea {
-    width: 600px;
-    height: 350px;
-    padding: 15px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    resize: vertical;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    font-family: inherit;
-    margin-right: 100px;
-  }
-  
-  .summary-actions {
-    display: flex;
-    justify-content: space-between;
-  }
-  
- 
+.summary-section-container {
+  padding: 0 0 100px 0;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.summary-heading {
+  color: #1e293b;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.summary-subtext {
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 32px;
+}
+
+.summary-textarea {
+  width: 100%;
+  min-height: 400px;
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #1e293b;
+  font-family: inherit;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.summary-textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+  outline: none;
+}
+
+.summary-textarea::placeholder {
+  color: #94a3b8;
+}
+
+.status-message {
+  margin-top: 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.text-success {
+  color: #10b981;
+}
+
+.text-danger {
+  color: #ef4444;
+}
+
+/* Hidden save btn */
+.summary-btn.save-btn {
+  display: none;
+}

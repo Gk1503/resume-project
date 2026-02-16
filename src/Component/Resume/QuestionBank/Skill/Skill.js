@@ -1,49 +1,38 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import "./Skill.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import Skillsimg from "../../../Gallery/Skills.jpg";
+import { faTrash, faPlus, faStar } from "@fortawesome/free-solid-svg-icons";
+import api from "../../../../utils/api.config";
+import { ENDPOINTS } from "../../../../utils/constant";
 import FormContext from "../../Context/FormContext";
-import axios from "axios";
 
 function Skill() {
   const { skills, setSkills } = useContext(FormContext);
   const [message, setMessage] = useState("");
 
-  // Fetch skills from backend on mount
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
-        const res = await axios.get("http://localhost:5000/skills/get", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setSkills(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchSkills();
+  const fetchSkills = useCallback(async () => {
+    try {
+      const res = await api.get(ENDPOINTS.GET_SKILLS);
+      setSkills(res.data);
+    } catch (err) {
+      console.error(err);
+    }
   }, [setSkills]);
 
-  // Add new skill locally
+  useEffect(() => {
+    fetchSkills();
+  }, [fetchSkills]);
+
   const handleAddCustomSkill = () => {
-    const newSkill = { name: "", rating: 1 };
+    const newSkill = { name: "", rating: 3 };
     setSkills((prev) => [...prev, newSkill]);
   };
 
-  // Delete skill
   const handleDeleteSkill = async (index) => {
     const skillToDelete = skills[index];
     try {
-      const token = localStorage.getItem("token");
-      if (skillToDelete._id && token) {
-        await axios.delete(
-          `http://localhost:5000/skills/delete/${skillToDelete._id}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+      if (skillToDelete._id) {
+        await api.delete(`${ENDPOINTS.DELETE_SKILLS}/${skillToDelete._id}`);
       }
       setSkills((prev) => prev.filter((_, i) => i !== index));
     } catch (err) {
@@ -51,45 +40,31 @@ function Skill() {
     }
   };
 
-  // Update name
   const handleNameChange = (index, newName) => {
     const updatedSkills = [...skills];
     updatedSkills[index].name = newName;
     setSkills(updatedSkills);
   };
 
-  // Update rating
   const handleRatingChange = (index, rating) => {
     const updatedSkills = [...skills];
     updatedSkills[index].rating = rating;
     setSkills(updatedSkills);
   };
 
-  // Save all skills
-  const handleSaveSkills = async () => {
+  const handleSaveSkills = async (e) => {
+    if (e) e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setMessage("❌ Please login to save skills.");
-        return;
-      }
-
       if (skills.length === 0) {
-        setMessage("❌ No skills to save.");
+        setMessage("error: No skills to save.");
         return;
       }
-
-      const res = await axios.post(
-        "http://localhost:5000/skills/save",
-        { skills },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setMessage("✅ " + res.data.message);
-      setSkills(res.data.data); // update skills with saved ones
+      const res = await api.post(ENDPOINTS.SAVE_SKILLS, { skills });
+      setMessage("success: " + res.data.message);
+      setSkills(res.data.data);
+      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
-      console.error(err);
-      setMessage(err.response?.data?.message || "❌ Failed to save skills");
+      setMessage("error: Failed to save skills");
     }
   };
 
@@ -99,51 +74,57 @@ function Skill() {
       <div className="subtit">Choose from our pre-written examples below or write your own.</div>
 
       <div className="skillLayoutUniqueskill">
-        {/* Left side */}
-        <div className="recommendedSectionUniqueskill">
-          <div style={{ marginTop: "20px" }}>
-            <h3>Add Yours</h3>
-            <button className="addSkillBtnUniqueskill" onClick={handleAddCustomSkill}>
-              ➕ Add Custom Skill
-            </button>
-            <button className="saveBtnUniqueskill" onClick={handleSaveSkills}>
-              💾 Save Skills
-            </button>
-          </div>
-          <img className="Skillimg" src={Skillsimg} alt="Skills Illustration" />
+        <div className="skills-manager-header">
+          <h3>Your Skills</h3>
+          <button className="addSkillBtnUniqueskill" onClick={handleAddCustomSkill}>
+            <FontAwesomeIcon icon={faPlus} /> Add Custom Skill
+          </button>
         </div>
 
-        {/* Right side */}
-        <div className="ratingSectionUniqueskill">
-          <h3>Skills Rating</h3>
+        <form onSubmit={handleSaveSkills} className="skills-grid-lum">
           {skills.map((skill, index) => (
-            <div className="skillItemUniqueskill" key={index}>
+            <div className="skill-row-lum" key={index}>
+              <div className="skill-input-wrap">
+                <input
+                  type="text"
+                  value={skill.name}
+                  onChange={(e) => handleNameChange(index, e.target.value)}
+                  placeholder="e.g. Project Management"
+                />
+              </div>
+              
               <div className="starRatingUniqueskill">
                 {[...Array(5)].map((_, i) => (
-                  <span
+                  <FontAwesomeIcon
                     key={i}
+                    icon={faStar}
                     className={`singleStarUniqueskill ${i < skill.rating ? "filledStarUniqueskill" : ""}`}
                     onClick={() => handleRatingChange(index, i + 1)}
-                  >
-                    ★
-                  </span>
+                  />
                 ))}
               </div>
-              <input
-                type="text"
-                value={skill.name}
-                onChange={(e) => handleNameChange(index, e.target.value)}
-                placeholder="Enter skill name (e.g., HTML)"
-              />
-              <button className="deleteSkillBtnUniqueskill" onClick={() => handleDeleteSkill(index)}>
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
+
+              <div className="skill-actions">
+                <button 
+                  type="button"
+                  className="deleteSkillBtnUniqueskill" 
+                  onClick={() => handleDeleteSkill(index)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
             </div>
           ))}
-        </div>
+          
+          <button type="submit" id="skill-form-submit" style={{ display: "none" }}></button>
+        </form>
       </div>
 
-      {message && <p className="status-message">{message}</p>}
+      {message && (
+        <p className={`status-message ${message.startsWith("success") ? "text-success" : "text-danger"}`}>
+          {message.split(": ")[1]}
+        </p>
+      )}
     </div>
   );
 }

@@ -1,92 +1,199 @@
-.Destop{
-height: 150px;
-border: 1px solid;
-position: relative;
-background-color:  #092347;
-z-index: 1;
-}
-.Desbot{
-    /* border: 1px solid black; */
-    height: 700px;
-    position: absolute;
-  top: 50px;
-width: 1528px;
-  z-index: 2;
-  border-top-right-radius: 110px;
-  background-color: white;
-}
-h4{
-    color: white;
-    margin-top: 10px;
-    margin-left: 200px;
-}
-h4 span{
-    color: orangered;
-}
-#justreview{
-    text-align:center;
-    font-size: 25px;
-    color: #002d6b;
+/* Luminal Design Concept - Resume Builder Entry */
 
+.DesginOneMain {
+  min-height: calc(100vh - 80px);
+  /* Vertical fit accounting for Nav */
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 40px 20px;
 }
-#StartfromStrach{
-    border: 1px solid black;
-    height: 250px;
-    width: 500px;
-    margin-left: 500px;
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor:pointer;
-    border-radius: 10px 10px 10px 10px ;
-}
-#faFile{
-    font-size: 70px;
-    color: orangered;
-}
-#well{
-    text-align: center;
-    font-size: 17px;
-    color:  #092347;
-}
-#StartfromStrach div h5{
-    font-size: 25px;
-    color: #002d6b ;
-}
-#StartfromStrach:hover{
-    border: 7px solid darkgreen;
 
+/* Luminal background glow */
+.DesginOneMain::before {
+  content: '';
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  filter: blur(80px);
+  top: -100px;
+  left: -100px;
+  z-index: 1;
 }
-.Nextbtn{
-    border-radius: 60px ;
-    width: 180px;
-    justify-content: center;
-    margin-left: 670px;
-    margin-top: 20px;
-    height: 50px;
-    background-color: #02818c;
-    color: #f6f5f0;
-    font-weight: bolder;
+
+.Desbot {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1000px;
+  text-align: center;
 }
-/* Button styles */
+
+.Desbot h1 {
+  color: #1e293b;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+#justreview {
+  color: #64748b;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 48px;
+}
+
+.options-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.selection-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 24px;
+  padding: 40px 30px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  position: relative;
+  border: 2px solid transparent;
+}
+
+.selection-card:hover {
+  transform: translateY(-8px);
+  background: white;
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.08);
+  border-color: #e2e8f0;
+}
+
+.selection-card.clicked {
+  border-color: #6366f1;
+  background: white;
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.12);
+}
+
+.card-icon-wrap {
+  width: 80px;
+  height: 80px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #6366f1;
+  margin-bottom: 24px;
+  transition: all 0.3s;
+}
+
+.selection-card:hover .card-icon-wrap,
+.selection-card.clicked .card-icon-wrap {
+  background: #6366f1;
+  color: white;
+  transform: scale(1.1);
+}
+
+.selection-card h5 {
+  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.selection-card p {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.selection-indicator {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.selection-card.clicked .selection-indicator {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: white;
+}
+
+.selection-indicator::after {
+  content: '✓';
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.selection-card.clicked .selection-indicator::after {
+  opacity: 1;
+}
+
+.actions-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.Nextbtn {
+  padding: 16px 64px;
+  border-radius: 100px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .Nextbtn.disabled {
-    background-color: gray;
-    cursor: not-allowed;
-    opacity: 0.6;
+  background: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.Nextbtn.enabled {
+  background: #1e293b;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(30, 41, 59, 0.2);
+}
+
+.Nextbtn.enabled:hover {
+  background: #0f172a;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(30, 41, 59, 0.3);
+}
+
+@media (max-width: 768px) {
+  .Desbot h1 {
+    font-size: 2rem;
   }
-  
-  .Nextbtn.enabled {
-    background-color: #02818c;
-    cursor: pointer;
-    opacity: 1;
+
+  .Desbot {
+    padding-top: 20px;
   }
-  #StartfromStrach.clicked {
-    border: 7px solid darkgreen;
-  }
-  
-  /* Original hover effect (still applies until clicked) */
-  #StartfromStrach:hover {
-    border: 7px solid darkgreen;
-  }
+}

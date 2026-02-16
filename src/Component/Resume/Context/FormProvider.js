@@ -7,31 +7,38 @@ const FormProvider = ({ children }) => {
     Pincode: "", EmailId: "", LinkedIn: "", Website: "", DrivingLicence: ""
   });
 
-  const [educationDetails, setEducationDetails] = useState({
+  // Active form entries (what's currently being typed)
+  const [activeEducation, setActiveEducation] = useState({
     SchoolName: "", SchoolLocation: "", Degree: "", FieldOfStudy: "",
-    GraduationMonth: "", GraduationYear: ""
+    GraduationMonth: "", GraduationYear: "", Score: "", GradeType: ""
   });
 
-  const [workHistory , setworkHistory] = useState({
+  const [activeWorkHistory , setActiveWorkHistory] = useState({
     JobTitle: "", Employer: "", JobLocation: "", JobStartMonth: "",
     JobStartYear: "", JobEndMonth: "", JobEndYear: ""
   });
 
+  // Full lists (saved entries)
+  const [educationList, setEducationList] = useState([]);
+  const [workHistoryList, setWorkHistoryList] = useState([]);
+
   const [isFresher, setIsFresher] = useState(false); 
-
   const [skills, setSkills] = useState([]);
+  const [hobbies, setHobbies] = useState([]);
   const [summary, setSummary] = useState("");
-
   const [changebtn , setchangebtn] = useState(1);
 
   return (
     <FormContext.Provider
       value={{
         personalDetails, setPersonalDetails,
-        educationDetails, setEducationDetails,
-        workHistory, setworkHistory,
+        activeEducation, setActiveEducation,
+        activeWorkHistory, setActiveWorkHistory,
+        educationList, setEducationList,
+        workHistoryList, setWorkHistoryList,
         isFresher, setIsFresher, 
         skills, setSkills,
+        hobbies, setHobbies,
         summary, setSummary,
         changebtn,setchangebtn
       }}

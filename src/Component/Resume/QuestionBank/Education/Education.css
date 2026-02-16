@@ -1,201 +1,172 @@
+/* Luminal Builder - Education Form Styling */
 
-.education{
-    padding: 30px;
-    font-family: Arial, sans-serif;
-    width: 830px;
-    margin: 0 auto;
-  }
-  
-  .education-container h2 {
-    font-size: 26px;
-    color: #111;
-  }
-  
-  .education-container p {
-    margin-bottom: 25px;
-    color: #444;
-  }
-  
-  .education-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .form-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  
-  .form-group {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .fullwidth {
-    width: 40px;
-  }
-  
-  label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    margin-top: 40px;
-  }
-  
-  input,
-  select {
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  input::placeholder {
-    color: #aaa;
-  }
-  
-  .grad-date-selectors {
-    display: flex;
-    gap: 40px;
-    
-  }
-  .grad-date-selectors select{
-
-    width: 100px;
-
-  }
-.AddAnother{
-  margin-top: 40px;
-  border: 0px solid black;
-  background-color: white;
-}
-.AddAnother:hover{
-  background-color: black;
-}
 .education {
-  padding: 30px;
-  font-family: Arial, sans-serif;
-  width: 850px;
-  margin: 0 auto;
+  padding: 0 0 100px 0;
+  /* Space for footer */
+  animation: fadeIn 0.6s ease-out;
 }
 
 .education h2 {
-  font-size: 26px;
-  color: #111;
+  color: #1e293b;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1.2;
 }
 
 .education p {
-  margin-bottom: 25px;
-  color: #444;
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 32px;
 }
 
 .education-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 30px;
+  gap: 24px;
 }
 
 .form-row {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
 .form-group {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
-.fullwidth {
+.form-group.fullwidth {
+  grid-column: span 2;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  font-size: 0.95rem;
+  transition: all 0.3s;
   width: 100%;
+  box-sizing: border-box;
 }
 
-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-input,
-select {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-input::placeholder {
-  color: #aaa;
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+  outline: none;
 }
 
 .grad-date-selectors {
-  display: flex;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-.grad-date-selectors select {
-  width: 120px;
-}
-
-/* Save Button */
+/* Save Button (Hidden as we use global nav) */
 .save-btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #0d6efd;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  display: none;
 }
 
-.save-btn:hover {
-  background-color: #0b5ed7;
+/* Saved Education List (Modern Card-style list instead of table) */
+.saved-education-list {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.saved-education-list h3 {
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.education-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edu-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.edu-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.edu-info h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+}
+
+.edu-info p {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.edu-actions .delete-btn {
+  background: #f1f5f9;
+  color: #64748b;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edu-actions .delete-btn:hover {
+  background: #fee2e2;
+  color: #ef4444;
 }
 
 .status-message {
-  margin-top: 10px;
-  font-weight: bold;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-/* Table Styling */
-.saved-education-table {
-  margin-top: 30px;
+.text-success {
+  color: #10b981;
 }
 
-.saved-education-table table {
-  width: 100%;
-  border-collapse: collapse;
+.text-danger {
+  color: #ef4444;
 }
 
-.saved-education-table th,
-.saved-education-table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
+@media (max-width: 600px) {
 
-.saved-education-table th {
-  background-color: #0d6efd;
-  color: white;
-}
-
-.saved-education-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.delete-btn {
-  padding: 5px 10px;
-  font-size: 14px;
-  color: white;
-  background-color: #dc3545;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background-color: #c82333;
+  .form-row,
+  .grad-date-selectors {
+    grid-template-columns: 1fr;
+  }
 }
