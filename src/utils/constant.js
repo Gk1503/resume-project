@@ -22,5 +22,7 @@ export const ENDPOINTS = {
   GET_HOBBIES: "/hobbies/get",
   SAVE_HOBBIES: "/hobbies/save",
   DELETE_HOBBIES: "/hobbies/delete",
-  // Add more endpoints as needed
+  FORGOT_PASSWORD: "/forgot-password",
+  VERIFY_OTP: "/verify-otp",
+  RESET_PASSWORD: "/reset-password",
 };

@@ -118,7 +118,7 @@ function Desgin() {
                 Save Final Summary
               </button>
               <button className="btn-builder-nav btn-preview" onClick={handleShowPreview}>
-                <FontAwesomeIcon icon={faEye} className="me-2" /> Finish & Preview
+                <FontAwesomeIcon icon={faEye} className="me-2" /> Finish & Download
               </button>
             </div>
           )}

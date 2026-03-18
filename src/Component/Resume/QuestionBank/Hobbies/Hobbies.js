@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import "./Hobbies.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
+import { Alert, Button } from "react-bootstrap";
 import api from "../../../../utils/api.config";
 import { ENDPOINTS } from "../../../../utils/constant";
 import FormContext from "../../Context/FormContext";
@@ -25,10 +26,17 @@ function Hobbies() {
   }, [fetchHobbies]);
 
   const handleAddHobby = () => {
-    if (newHobby.trim()) {
-      setHobbies((prev) => [...prev, newHobby.trim()]);
+    const cleanedHobby = newHobby.replace(/[0-9]/g, "").trim();
+    if (cleanedHobby) {
+      setHobbies((prev) => [...prev, cleanedHobby]);
       setNewHobby("");
     }
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    const charOnlyValue = value.replace(/[0-9]/g, "");
+    setNewHobby(charOnlyValue);
   };
 
   const handleDeleteHobby = (index) => {
@@ -39,8 +47,7 @@ function Hobbies() {
     if (e) e.preventDefault();
     try {
       const res = await api.post(ENDPOINTS.SAVE_HOBBIES, { hobbies });
-      setMessage("success: " + res.data.message);
-      // Optional: Refetch or just rely on local state if success
+      setMessage("success: Hobbies saved successfully.");
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       setMessage("error: Failed to save hobbies");
@@ -52,12 +59,18 @@ function Hobbies() {
       <h1>Interests & Hobbies</h1>
       <p>What do you like to do in your free time?</p>
 
+      {message && (
+        <Alert variant={message.startsWith("success") ? "success" : "danger"} className="mt-3 mb-3">
+          {message.split(": ")[1]}
+        </Alert>
+      )}
+
       <div className="hobbies-manager">
         <div className="hobby-input-group">
           <input
             type="text"
             value={newHobby}
-            onChange={(e) => setNewHobby(e.target.value)}
+            onChange={handleInputChange}
             placeholder="e.g. Photography, Travelling"
             onKeyDown={(e) => e.key === "Enter" && handleAddHobby()}
           />
@@ -66,7 +79,7 @@ function Hobbies() {
           </button>
         </div>
 
-        <div className="hobbies-list">
+        <div className="hobbies-list shadow-sm">
           {hobbies.map((hobby, index) => (
             <div className="hobby-tag" key={index}>
               <span>{hobby}</span>
@@ -78,19 +91,15 @@ function Hobbies() {
               </button>
             </div>
           ))}
+          {hobbies.length === 0 && <p className="text-muted p-3 mb-0">No hobbies added yet.</p>}
         </div>
 
-        {/* Hidden Trigger for Global Nav */}
+
+
         <form onSubmit={handleSaveHobbies}>
            <button type="submit" id="hobbies-form-submit" style={{ display: "none" }}></button>
         </form>
       </div>
-
-      {message && (
-        <p className={`status-message ${message.startsWith("success") ? "text-success" : "text-danger"}`}>
-          {message.split(": ")[1]}
-        </p>
-      )}
     </div>
   );
 }

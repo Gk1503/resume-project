@@ -59,15 +59,15 @@ const Footer = () => {
             <ul className="footer-contact-list">
               <li>
                 <FontAwesomeIcon icon={faEnvelope} />
-                <span>support@resumeai.com</span>
+                <span>info@resumeai.com</span>
               </li>
               <li>
                 <FontAwesomeIcon icon={faPhone} />
-                <span>+1 (555) 123-4567</span>
+                <span>+1 (555) 123-XXXX</span>
               </li>
               <li>
                 <FontAwesomeIcon icon={faLocationDot} />
-                <span>123 AI Street, Tech Valley, CA</span>
+                <span>Lorem ipsum dolor sit amet, 1234 Lorem Street,</span>
               </li>
             </ul>
           </Col>
@@ -77,7 +77,7 @@ const Footer = () => {
 
         <Row className="footer-bottom">
           <Col md={6} className="footer-copyright">
-            <p>© 2026 Resume AI Builder. All rights reserved.</p>
+            <p>© 2026 MyPerfectResume. All rights reserved.</p>
           </Col>
           <Col md={6} className="footer-legal-links">
             <a href="#">Privacy Policy</a>

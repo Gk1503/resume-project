@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import api from "../../utils/api.config";
 import { ENDPOINTS } from "../../utils/constant";
@@ -8,6 +9,8 @@ import "./Preview.css";
 
 function Preview({ show, handleClose }) {
   const contextData = useContext(FormContext);
+  const { resetForm } = contextData;
+  const navigate = useNavigate();
   
   const [remoteData, setRemoteData] = useState({
     personalDetails: {},
@@ -17,7 +20,6 @@ function Preview({ show, handleClose }) {
     summary: "",
   });
   const [pdfUrl, setPdfUrl] = useState(null);
-  const [template, setTemplate] = useState("modern");
   const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
@@ -106,6 +108,8 @@ function Preview({ show, handleClose }) {
     if (hasData(contextData?.activeWorkHistory)) {
         workHistory.push(contextData.activeWorkHistory);
     }
+
+    const template = contextData?.selectedTemplate || "modern";
 
     const config = {
       modern: { primary: [37, 99, 235], secondary: [71, 85, 105], font: "helvetica", style: "bold" },
@@ -332,11 +336,16 @@ function Preview({ show, handleClose }) {
 
   useEffect(() => {
     if (show) generatePdfPreview();
-  }, [show, template, remoteData, contextData]);
+  }, [show, contextData?.selectedTemplate, remoteData, contextData]);
 
   const handleDownload = () => {
     const doc = generatePdf();
     doc.save("resume.pdf");
+    
+    // Clear data and redirect
+    resetForm();
+    handleClose();
+    navigate("/DesginOne");
   };
 
   return (
@@ -346,68 +355,7 @@ function Preview({ show, handleClose }) {
       </Modal.Header>
       <Modal.Body className="p-0 bg-light">
         <div className="preview-layout">
-          <div className="preview-settings p-4 border-bottom bg-white">
-            <h5 className="mb-3">Choose a Template</h5>
-            <div className="template-grid d-flex gap-3">
-              {[
-                { id: "modern", name: "Modern Blue", color: "#2563eb" },
-                { id: "executive", name: "Executive", color: "#0f172a" },
-                { id: "minimal", name: "Sleek Minimal", color: "#000000" },
-                { id: "photo", name: "Photo Resume", color: "#2563eb" }
-              ].map(t => (
-                <div 
-                  key={t.id}
-                  className={`template-card p-3 border rounded text-center cursor-pointer ${template === t.id ? "border-primary bg-primary text-white" : "bg-white"}`}
-                  onClick={() => setTemplate(t.id)}
-                  style={{ flex: 1, cursor: "pointer" }}
-                >
-                  <div className="template-dot mb-2 mx-auto" style={{ width: 12, height: 12, borderRadius: "50%", background: template === t.id ? "white" : t.color }}></div>
-                  <div className="small fw-bold">{t.name}</div>
-                </div>
-              ))}
-            </div>
-
-            {template === 'photo' && (
-              <div className="mt-4 p-3 bg-light rounded border">
-                 <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label className="fw-bold">Upload Profile Photo</Form.Label>
-                    <Form.Control type="file" accept="image/*" onChange={(e) => {
-                       const file = e.target.files[0];
-                       if (file) {
-                         const reader = new FileReader();
-                         reader.onloadend = () => {
-                           const newPhoto = reader.result;
-                           setPhoto(newPhoto);
-                           
-                           // Update local data to reflect change immediately in PDF
-                           setRemoteData(prev => ({
-                             ...prev,
-                             personalDetails: { ...prev.personalDetails, Photo: newPhoto } 
-                           }));
-
-                           // Update Context if setter available (it should be)
-                           if (contextData?.setPersonalDetails) {
-                               contextData.setPersonalDetails(prev => ({ ...prev, Photo: newPhoto }));
-                           }
-                         };
-                         reader.readAsDataURL(file);
-                       }
-                    }} />
-                 </Form.Group>
-                 {(photo || contextData?.personalDetails?.Photo || remoteData?.personalDetails?.Photo) && (
-                    <div className="d-flex align-items-center gap-3">
-                        <img 
-                          src={photo || contextData?.personalDetails?.Photo || remoteData?.personalDetails?.Photo} 
-                          alt="Preview" 
-                          style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover", border: "2px solid #2563eb" }} 
-                        />
-                        <span className="text-secondary small">Photo Selected</span>
-                    </div>
-                 )}
-              </div>
-            )}
-          </div>
-
+          {/* Template selected at start - showing final result */}
           <div className="pdf-container p-4 d-flex justify-content-center">
             {pdfUrl && (
               <iframe

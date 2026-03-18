@@ -41,7 +41,7 @@ function BN() {
                 variants={fadeInUp}
                 className="hero-text-wrapper"
             >
-                <div className="trust-badge">
+                {/* <div className="trust-badge">
                     <span className="stars">
                         <FontAwesomeIcon icon={faStar} />
                         <FontAwesomeIcon icon={faStar} />
@@ -50,7 +50,7 @@ function BN() {
                         <FontAwesomeIcon icon={faStar} />
                     </span>
                     <span className="trust-text">Rated #1 Resume Builder</span>
-                </div>
+                </div> */}
 
                 <h1 className="hero-title">
                     Build a  <span className="highlight-text">Perfect Resume</span> that gets you hired.
@@ -74,9 +74,9 @@ function BN() {
 
                 <div className="hero-actions">
                     <button className="primary-btn" onClick={OpenDesgin}>
-                        Build My Resume <FontAwesomeIcon icon={faArrowRight} />
+                        Build your Resume For Free <FontAwesomeIcon icon={faArrowRight} />
                     </button>
-                    <p className="no-card-text">No credit card required</p>
+                    {/* <p className="no-card-text">No credit card required</p> */}
                 </div>
 
                 <div className="hero-social-proof">

@@ -241,3 +241,33 @@
     padding: 14px;
   }
 }
+
+.password-toggle-btn {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  padding: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle-btn:hover {
+  color: #6366f1;
+}
+
+.password-toggle-btn:focus {
+  outline: none;
+  color: #6366f1;
+}
+
+.aura-input-wrapper input {
+  padding-right: 50px !important;
+}

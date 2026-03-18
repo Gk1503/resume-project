@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock, faUser, faPhone, faArrowRight, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { 
+  faEnvelope, 
+  faLock, 
+  faUser, 
+  faPhone, 
+  faArrowRight, 
+  faUserPlus,
+  faEye,
+  faEyeSlash 
+} from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import axios from "axios";
 import api from "../../utils/api.config";
 import { ENDPOINTS } from "../../utils/constant";
 import "./Signup.css";
@@ -20,6 +28,8 @@ function Signup() {
   });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -31,7 +41,6 @@ function Signup() {
     }
     setLoading(true);
     try {
-      // Mocking registration endpoint
       const { confirmPassword, ...registerData } = formData;
       await api.post(ENDPOINTS.REGISTER, registerData);
       setMessage("success: Account created! Redirecting to login...");
@@ -58,8 +67,8 @@ function Signup() {
            <div className="aura-icon-wrap">
               <FontAwesomeIcon icon={faUserPlus} />
            </div>
-           <h3>Create Identity</h3>
-           <p>Join the professional ecosystem</p>
+           <h3>My Perfect Resume</h3>
+           <p>Welcome! Create your account to get started.</p>
         </div>
 
         {message && (
@@ -121,13 +130,21 @@ function Signup() {
               <div className="aura-input-wrapper">
                 <FontAwesomeIcon icon={faLock} className="input-icon" />
                 <Form.Control 
-                  type="password" 
+                  type={showPassword ? "text" : "password"} 
                   name="password" 
                   placeholder="Password" 
                   value={formData.password} 
                   onChange={handleChange} 
                   required 
                 />
+                <button 
+                  type="button" 
+                  className="password-toggle-btn" 
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </button>
                 <div className="underglow"></div>
               </div>
             </Form.Group>
@@ -136,26 +153,34 @@ function Signup() {
               <div className="aura-input-wrapper">
                 <FontAwesomeIcon icon={faLock} className="input-icon" />
                 <Form.Control 
-                  type="password" 
+                  type={showConfirmPassword ? "text" : "password"} 
                   name="confirmPassword" 
                   placeholder="Confirm Password" 
                   value={formData.confirmPassword} 
                   onChange={handleChange} 
                   required 
                 />
+                <button 
+                  type="button" 
+                  className="password-toggle-btn" 
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+                </button>
                 <div className="underglow"></div>
               </div>
             </Form.Group>
           </div>
 
           <Button id="btn-aura-submit" type="submit" disabled={loading}>
-            {loading ? "Initializing..." : "Register Identity"}
+            {loading ? "Initializing..." : "Register"}
             {!loading && <FontAwesomeIcon icon={faArrowRight} className="ms-2" />}
           </Button>
         </Form>
 
         <div className="aura-footer">
-           <p>Already have an identity? <span onClick={() => navigate("/login")}>Log In</span></p>
+           <p>Already have an account? <span onClick={() => navigate("/login")}>Log In</span></p>
            <div className="footer-divider"></div>
            <span className="back-link" onClick={() => navigate("/")}>Back to Home</span>
         </div>

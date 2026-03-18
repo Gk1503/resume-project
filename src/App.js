@@ -2,6 +2,7 @@ import "./App.css";
 import Home from "./Component/HomePage/Home";
 import Login from "./Component/Navbar/Login";
 import Signup from "./Component/Navbar/Signup";
+import ForgotPassword from "./Component/Navbar/ForgotPassword";
 import Navbar from "./Component/Navbar/Nav";
 import DesginOne from "./Component/Resume/DesginMain/DesginOne/DesginOne";
 import Profile from "./Component/Navbar/Profile";
@@ -30,6 +31,7 @@ function App() {
               <Route path="/" element={<Home />}></Route>
               <Route path="/login" element={<Login />}></Route>
               <Route path="/signup" element={<Signup />}></Route>
+              <Route path="/forgot-password" element={<ForgotPassword />}></Route>
               
               {/* Protected Routes */}
               <Route path="/profile" element={

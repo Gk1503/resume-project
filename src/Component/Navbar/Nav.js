@@ -84,11 +84,8 @@ function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="navbar-links desktop-only">
-                <a href="#builders" className="nav-link-item">Builders</a>
-                <a href="#resumes" className="nav-link-item">Resumes</a>
-                <a href="#cover-letters" className="nav-link-item">Cover Letters</a>
-                <a href="#cvs" className="nav-link-item">CVs</a>
-                <a href="#resources" className="nav-link-item">Resources</a>
+                
+                {/* <a href="#resources" className="nav-link-item"></a> */}
             </div>
 
             {/* Actions Section (Login/Register) */}

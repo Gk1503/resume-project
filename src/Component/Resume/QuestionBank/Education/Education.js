@@ -1,16 +1,19 @@
-import React, { useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import "./Education.css";
 import api from "../../../../utils/api.config";
 import { ENDPOINTS } from "../../../../utils/constant";
 import FormContext from "../../Context/FormContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faSave } from "@fortawesome/free-solid-svg-icons";
+import { Alert, Button } from "react-bootstrap";
 
 function Education() {
   const { 
     activeEducation, setActiveEducation, 
     educationList, setEducationList 
   } = useContext(FormContext);
+  const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState([]);
 
   const emptyEducation = {
     SchoolName: "",
@@ -37,10 +40,44 @@ function Education() {
     fetchEducation();
   }, [fetchEducation]);
 
+  const validate = () => {
+    const newErrors = [];
+    const nameRegex = /^[a-zA-Z\s.-]*$/;
+    const scoreRegex = /^[0-9./]*$/;
+
+    if (!activeEducation.SchoolName || activeEducation.SchoolName.trim() === "") {
+        newErrors.push("School Name is required.");
+    } else if (!nameRegex.test(activeEducation.SchoolName)) {
+        newErrors.push("School Name cannot contain numbers.");
+    }
+
+    if (!activeEducation.Degree || activeEducation.Degree === "") {
+        newErrors.push("Degree is required.");
+    }
+
+    if (activeEducation.Degree && activeEducation.Degree !== "10th") {
+        if (!activeEducation.FieldOfStudy || activeEducation.FieldOfStudy.trim() === "") {
+            newErrors.push("Field of Study / Stream is required.");
+        }
+    }
+
+    if (!activeEducation.Score || activeEducation.Score.trim() === "") {
+        newErrors.push("Score / CGPA is required.");
+    } else if (!scoreRegex.test(activeEducation.Score)) {
+        newErrors.push("Score/CGPA should only contain numbers, dots, or slashes.");
+    }
+
+    if (!activeEducation.GraduationMonth || !activeEducation.GraduationYear) {
+        newErrors.push("Graduation Date (Month and Year) is required.");
+    }
+
+    setErrors(newErrors);
+    return newErrors.length === 0;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // Conditional logic for Degree change
     if (name === "Degree") {
       let gradeType = "";
       if (value === "10th" || value === "12th") gradeType = "Percentage";
@@ -49,8 +86,8 @@ function Education() {
       setActiveEducation({ 
         ...activeEducation, 
         Degree: value,
-        FieldOfStudy: "", // Reset field of study on degree change
-        Score: "", // Reset score on degree change
+        FieldOfStudy: "",
+        Score: "",
         GradeType: gradeType
       });
     } else {
@@ -60,10 +97,11 @@ function Education() {
 
   const handleSave = async (e) => {
     if (e) e.preventDefault();
+    if (!validate()) return;
+
     try {
       const eduToSave = { ...activeEducation };
       
-      // Ensure GradeType is set if not already
       if (!eduToSave.GradeType && eduToSave.Degree) {
         if (eduToSave.Degree === "10th" || eduToSave.Degree === "12th") {
           eduToSave.GradeType = "Percentage";
@@ -72,23 +110,15 @@ function Education() {
         }
       }
 
-      if (eduToSave.GraduationMonth === "Month") eduToSave.GraduationMonth = "";
-      if (eduToSave.GraduationYear === "Year") eduToSave.GraduationYear = "";
-
-      console.log("=== SAVING EDUCATION ===");
-      console.log("Data being sent to API:", eduToSave);
-
       const res = await api.post(ENDPOINTS.SAVE_EDUCATION, { educationDetails: eduToSave });
-
-      console.log("API Response:", res.data);
-
       const data = res.data.educationDetails || res.data.education || res.data || [];
-      console.log("Extracted education list:", data);
       
       setEducationList(Array.isArray(data) ? data : educationList); 
       setActiveEducation(emptyEducation);
+      setMessage("success: Education saved successfully.");
+      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
-      console.error("Failed to save education:", err);
+      setMessage("error: Failed to save education.");
     }
   };
 
@@ -97,6 +127,8 @@ function Education() {
       const res = await api.delete(`${ENDPOINTS.DELETE_EDUCATION}/${id}`);
       const data = res.data.educationDetails || res.data.education || res.data || [];
       setEducationList(Array.isArray(data) ? data : educationList.filter((item) => item._id !== id));
+      setMessage("success: Entry removed.");
+      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error("Failed to delete education:", err);
     }
@@ -108,6 +140,20 @@ function Education() {
       <p>
         Enter your education experience so far, even if you are a current student or did not graduate.
       </p>
+
+      {errors.length > 0 && (
+        <Alert variant="danger" className="mt-3">
+            <ul className="mb-0">
+                {errors.map((err, idx) => <li key={idx}>{err}</li>)}
+            </ul>
+        </Alert>
+      )}
+
+      {message && (
+        <Alert variant={message.startsWith("success") ? "success" : "danger"} className="mt-3">
+          {message.split(": ")[1]}
+        </Alert>
+      )}
 
       <form className="education-form" onSubmit={handleSave}>
         <div className="form-row">
@@ -201,7 +247,7 @@ function Education() {
                 value={activeEducation.GraduationMonth || ""}
                 onChange={handleChange}
               >
-                <option>Month</option>
+                <option value="">Month</option>
                 {[
                   "January","February","March","April","May","June",
                   "July","August","September","October","November","December"
@@ -214,7 +260,7 @@ function Education() {
                 value={activeEducation.GraduationYear || ""}
                 onChange={handleChange}
               >
-                <option>Year</option>
+                <option value="">Year</option>
                 {Array.from({ length: 30 }, (_, i) => new Date().getFullYear() + 5 - i).map(
                   (year) => <option key={year} value={year}>{year}</option>
                 )}
@@ -223,10 +269,10 @@ function Education() {
           </div>
         </div>
 
-        <div className="btn-row mt-3">
-          <button type="submit" className="btn btn-primary w-100">
-            Save Education
-          </button>
+        <div className="btn-row mt-4">
+          <Button variant="primary" type="submit" className="w-100 save-edu-btn">
+             <FontAwesomeIcon icon={faSave} className="me-2" /> Save & Add Education
+          </Button>
         </div>
 
         {/* Hidden Trigger for Global Nav */}
@@ -241,7 +287,7 @@ function Education() {
               <div className="edu-card" key={edu._id}>
                 <div className="edu-info">
                   <h4>{edu.SchoolName}</h4>
-                  <p>{edu.Degree} in {edu.FieldOfStudy} • {edu.GraduationYear}</p>
+                  <p>{edu.Degree} {edu.FieldOfStudy && `in ${edu.FieldOfStudy}`} • {edu.GraduationYear}</p>
                 </div>
                 <div className="edu-actions">
                   <button className="delete-btn" onClick={() => handleDelete(edu._id)}>

@@ -4,7 +4,7 @@ import FormContext from "../Context/FormContext";
 const FormProvider = ({ children }) => {
   const [personalDetails, setPersonalDetails] = useState({
     FirstName: "", SurName: "", PhoneNumber: "", City: "", Country: "",
-    Pincode: "", EmailId: "", LinkedIn: "", Website: "", DrivingLicence: ""
+    Pincode: "", EmailId: "", LinkedIn: "", Website: "", Gender: ""
   });
 
   // Active form entries (what's currently being typed)
@@ -27,6 +27,29 @@ const FormProvider = ({ children }) => {
   const [hobbies, setHobbies] = useState([]);
   const [summary, setSummary] = useState("");
   const [changebtn , setchangebtn] = useState(1);
+  const [selectedTemplate, setSelectedTemplate] = useState("modern");
+
+  const resetForm = () => {
+    setPersonalDetails({
+      FirstName: "", SurName: "", PhoneNumber: "", City: "", Country: "",
+      Pincode: "", EmailId: "", LinkedIn: "", Website: "", Gender: ""
+    });
+    setActiveEducation({
+      SchoolName: "", SchoolLocation: "", Degree: "", FieldOfStudy: "",
+      GraduationMonth: "", GraduationYear: "", Score: "", GradeType: ""
+    });
+    setActiveWorkHistory({
+      JobTitle: "", Employer: "", JobLocation: "", JobStartMonth: "",
+      JobStartYear: "", JobEndMonth: "", JobEndYear: ""
+    });
+    setEducationList([]);
+    setWorkHistoryList([]);
+    setIsFresher(false);
+    setSkills([]);
+    setHobbies([]);
+    setSummary("");
+    setchangebtn(1);
+  };
 
   return (
     <FormContext.Provider
@@ -40,7 +63,9 @@ const FormProvider = ({ children }) => {
         skills, setSkills,
         hobbies, setHobbies,
         summary, setSummary,
-        changebtn,setchangebtn
+        changebtn,setchangebtn,
+        selectedTemplate, setSelectedTemplate,
+        resetForm
       }}
     >
       {children}

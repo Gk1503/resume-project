@@ -117,3 +117,70 @@
     margin-left: 10px;
     opacity: 0.5;
 }
+
+/* Template Specific Styles */
+.template-executive .mini-header {
+    border-bottom: 3px double #0f172a;
+    text-align: center;
+}
+
+.template-executive .mini-name {
+    font-family: 'Merriweather', serif;
+    letter-spacing: 2px;
+}
+
+.template-minimal {
+    padding: 40px;
+}
+
+.template-minimal .mini-header {
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.template-minimal .mini-name {
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.template-minimal .mini-contact {
+    justify-content: flex-start;
+}
+
+.template-minimal .mini-section-title {
+    color: #1e293b;
+    border-bottom: none;
+    font-size: 0.8rem;
+    padding-bottom: 0;
+}
+
+.template-photo .mini-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: none;
+    background: #f8fafc;
+    padding: 20px;
+    margin: -30px -30px 20px -30px;
+}
+
+.template-photo .mini-photo-wrap {
+    margin-bottom: 15px;
+}
+
+.template-photo .mini-photo {
+    width: 80px;
+    height: 80px;
+    border: 3px solid white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.template-modern .mini-name {
+    color: #2563eb;
+}
+
+.template-modern .mini-section-title {
+    color: #2563eb;
+}

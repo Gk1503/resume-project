@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import "./Heading.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
+import { Alert, Button } from "react-bootstrap";
 import api from "../../../../utils/api.config";
 import { ENDPOINTS } from "../../../../utils/constant";
 import FormContext from "../../Context/FormContext";
@@ -9,9 +10,9 @@ import FormContext from "../../Context/FormContext";
 function HeadingQuestion() {
   const [showLinkedIn, setShowLinkedIn] = useState(false);
   const [showWebsite, setShowWebsite] = useState(false);
-  const [showDriving, setShowDriving] = useState(false);
   const { personalDetails, setPersonalDetails } = useContext(FormContext);
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState([]);
 
   const fetchPersonalDetails = useCallback(async () => {
     try {
@@ -20,7 +21,6 @@ function HeadingQuestion() {
         setPersonalDetails(res.data);
         if (res.data.LinkedIn) setShowLinkedIn(true);
         if (res.data.Website) setShowWebsite(true);
-        if (res.data.DrivingLicence) setShowDriving(true);
       }
     } catch (err) {
       console.error("❌ Error fetching details:", err);
@@ -31,6 +31,28 @@ function HeadingQuestion() {
     fetchPersonalDetails();
   }, [fetchPersonalDetails]);
 
+  const validate = () => {
+    const newErrors = [];
+    const nameRegex = /^[a-zA-Z\s]*$/;
+    const numRegex = /^[0-9+]*$/;
+
+    if (!nameRegex.test(personalDetails.FirstName)) {
+        newErrors.push("First Name cannot contain numbers or special characters.");
+    }
+    if (!nameRegex.test(personalDetails.SurName)) {
+        newErrors.push("Surname cannot contain numbers or special characters.");
+    }
+    if (!numRegex.test(personalDetails.PhoneNumber)) {
+        newErrors.push("Phone Number should only contain numbers and +.");
+    }
+    if (!numRegex.test(personalDetails.Pincode)) {
+        newErrors.push("Pincode should only contain numbers.");
+    }
+
+    setErrors(newErrors);
+    return newErrors.length === 0;
+  };
+
   const handleChange = (e) => {
     setPersonalDetails({
       ...personalDetails,
@@ -40,9 +62,12 @@ function HeadingQuestion() {
 
   const handleSave = async (e) => {
     if (e) e.preventDefault();
+    if (!validate()) return;
+
     try {
       const res = await api.post(ENDPOINTS.SAVE_PERSONAL_DETAILS, personalDetails);
       setMessage("success: " + res.data.message);
+      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       setMessage("error: " + (err.response?.data?.message || "Failed to save details."));
     }
@@ -75,6 +100,20 @@ function HeadingQuestion() {
     <div className="Desgin2">
       <h1 id="Designhtag">What’s the best way for employers to contact you?</h1>
       <h6 id="Designhtag">We suggest including an email and phone number.</h6>
+
+      {errors.length > 0 && (
+        <Alert variant="danger" className="mt-3">
+            <ul className="mb-0">
+                {errors.map((err, idx) => <li key={idx}>{err}</li>)}
+            </ul>
+        </Alert>
+      )}
+
+      {message && (
+        <Alert variant={message.startsWith("success") ? "success" : "danger"} className="mt-3">
+          {message.split(": ")[1]}
+        </Alert>
+      )}
 
       <div id="indicates">* indicates a required field</div>
 
@@ -172,8 +211,6 @@ function HeadingQuestion() {
                 required
               />
             </div>
-
-            {showDriving && renderInputField("Driving Licence", setShowDriving, "DrivingLicence")}
           </div>
         </div>
 
@@ -199,20 +236,28 @@ function HeadingQuestion() {
                 <option value="Widowed">Widowed</option>
               </select>
             </div>
+            <div>
+              <label>Gender</label>
+              <select name="Gender" value={personalDetails.Gender || ""} onChange={handleChange}>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+            </div>
           </div>
-          
+        </div>
 
+        <div className="form-actions-bar mt-4">
+             <Button variant="primary" type="submit" className="save-heading-btn">
+                <FontAwesomeIcon icon={faSave} className="me-2" /> Save Details
+             </Button>
         </div>
 
         {/* Hidden Trigger for Global Nav Save */}
         <button type="submit" id="heading-form-submit" style={{ display: "none" }}></button>
       </form>
-
-      {message && (
-        <p className={`status-message ${message.startsWith("success") ? "text-success" : "text-danger"}`}>
-          {message.split(": ")[1]}
-        </p>
-      )}
 
       <div className="AdditionalInformation">
         <h6 className="AdditionalInfor">Add additional information (optional)</h6>
@@ -225,11 +270,6 @@ function HeadingQuestion() {
           {!showWebsite && (
             <button className="btn-add-optional" onClick={() => setShowWebsite(true)}>
               <FontAwesomeIcon icon={faPlus} /> Website
-            </button>
-          )}
-          {!showDriving && (
-            <button className="btn-add-optional" onClick={() => setShowDriving(true)}>
-              <FontAwesomeIcon icon={faPlus} /> Driving Licence
             </button>
           )}
         </div>

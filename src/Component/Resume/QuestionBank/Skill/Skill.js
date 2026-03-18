@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import "./Skill.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPlus, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
+import { Alert, Button } from "react-bootstrap";
 import api from "../../../../utils/api.config";
 import { ENDPOINTS } from "../../../../utils/constant";
 import FormContext from "../../Context/FormContext";
@@ -24,7 +25,7 @@ function Skill() {
   }, [fetchSkills]);
 
   const handleAddCustomSkill = () => {
-    const newSkill = { name: "", rating: 3 };
+    const newSkill = { name: "" };
     setSkills((prev) => [...prev, newSkill]);
   };
 
@@ -41,14 +42,9 @@ function Skill() {
   };
 
   const handleNameChange = (index, newName) => {
+    const charOnlyName = newName.replace(/[0-9]/g, "");
     const updatedSkills = [...skills];
-    updatedSkills[index].name = newName;
-    setSkills(updatedSkills);
-  };
-
-  const handleRatingChange = (index, rating) => {
-    const updatedSkills = [...skills];
-    updatedSkills[index].rating = rating;
+    updatedSkills[index].name = charOnlyName;
     setSkills(updatedSkills);
   };
 
@@ -81,6 +77,12 @@ function Skill() {
           </button>
         </div>
 
+        {message && (
+            <Alert variant={message.startsWith("success") ? "success" : "danger"} className="mt-3">
+                {message.split(": ")[1]}
+            </Alert>
+        )}
+
         <form onSubmit={handleSaveSkills} className="skills-grid-lum">
           {skills.map((skill, index) => (
             <div className="skill-row-lum" key={index}>
@@ -90,18 +92,8 @@ function Skill() {
                   value={skill.name}
                   onChange={(e) => handleNameChange(index, e.target.value)}
                   placeholder="e.g. Project Management"
+                  required
                 />
-              </div>
-              
-              <div className="starRatingUniqueskill">
-                {[...Array(5)].map((_, i) => (
-                  <FontAwesomeIcon
-                    key={i}
-                    icon={faStar}
-                    className={`singleStarUniqueskill ${i < skill.rating ? "filledStarUniqueskill" : ""}`}
-                    onClick={() => handleRatingChange(index, i + 1)}
-                  />
-                ))}
               </div>
 
               <div className="skill-actions">
@@ -119,12 +111,6 @@ function Skill() {
           <button type="submit" id="skill-form-submit" style={{ display: "none" }}></button>
         </form>
       </div>
-
-      {message && (
-        <p className={`status-message ${message.startsWith("success") ? "text-success" : "text-danger"}`}>
-          {message.split(": ")[1]}
-        </p>
-      )}
     </div>
   );
 }
